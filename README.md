@@ -1,106 +1,38 @@
-# Quantum Tecnologia - Website
+# Quantum Spark Solutions
 
-Site institucional da Quantum Tecnologia - empresa especializada em soluções de IA, automações empresariais e CRM para advogados.
+Este repositório abriga dois projetos independentes que antes conviviam na mesma raiz. Agora cada um deles vive em um diretório dedicado para facilitar a publicação em repositórios separados ou pipelines distintas.
 
-## 🚀 Tecnologias
+## Estrutura
 
-- **React 18** - Biblioteca JavaScript para interfaces
-- **TypeScript** - Tipagem estática para JavaScript
-- **Tailwind CSS** - Framework de CSS utilitário
-- **Vite** - Build tool moderna e rápida
-- **Shadcn/ui** - Componentes UI reutilizáveis
-- **Lucide React** - Ícones modernos
+- [`frontend/`](frontend/) – Single Page Application construída com React, Vite, Tailwind CSS e shadcn/ui. Consulte o [`frontend/README.md`](frontend/README.md) para instruções de desenvolvimento, build e deploy.
+- [`backend/`](backend/) – API administrativa escrita em Node.js + Express com Prisma ORM, responsável por autenticação e CRUD do painel admin. Veja o [`backend/README.md`](backend/README.md) para configurar ambiente, banco de dados e testes.
 
-## 📦 Deploy - Easypanel
+## Separando em repositórios distintos
 
-### Pré-requisitos
-- Node.js 18+ 
-- Npm ou Yarn
+Se desejar publicar cada parte em um repositório git próprio, você pode usar `git subtree` (disponível em qualquer instalação Git recente):
 
-### Configuração para Produção
-
-1. **Clone o repositório**
 ```bash
-git clone <repository-url>
-cd quantum-tecnologia
+git subtree split --prefix frontend -b extract-frontend
+git remote add frontend-origin <url-do-repositorio-frontend>
+git push frontend-origin extract-frontend:main
+
+# Repita para o backend, se necessário
+git subtree split --prefix backend -b extract-backend
+git remote add backend-origin <url-do-repositorio-backend>
+git push backend-origin extract-backend:main
 ```
 
-2. **Instale as dependências**
+Outra alternativa é utilizar [`git filter-repo`](https://github.com/newren/git-filter-repo) para gerar um histórico enxuto apenas com os arquivos desejados.
+
+## Desenvolvimento local rápido
+
 ```bash
+# Frontend
+cd frontend
 npm install
-```
-
-3. **Build para produção**
-```bash
-npm run build
-```
-
-4. **Preview do build (opcional)**
-```bash
-npm run preview
-```
-
-### Deploy no Easypanel
-
-1. **Conecte o repositório** ao Easypanel
-2. **Configure as variáveis de ambiente** (se necessário)
-3. **Defina o comando de build**: `npm run build`
-4. **Defina o diretório de build**: `dist`
-5. **Configure o servidor** para servir uma SPA (Single Page Application)
-
-### Deploy com Docker
-
-Crie a imagem de produção utilizando o `Dockerfile` disponível no projeto. O build gera os arquivos estáticos com o Vite e um servidor Apache configurado para respeitar o `.htaccess`.
-
-```bash
-docker build -t quantum-spark-solutions .
-docker run -p 8080:80 quantum-spark-solutions
-```
-
-### Configuração do Servidor
-
-Para servir corretamente a aplicação React em produção, certifique-se de que o servidor:
-- Redireciona todas as rotas para `index.html`
-- Serve os arquivos estáticos da pasta `dist`
-- Define os MIME types corretos para `.js` e `.css`
-
-O arquivo `public/.htaccess` já está configurado para servidores Apache.
-
-### Variáveis de Ambiente (Opcional)
-
-Crie um arquivo `.env` para configurações específicas:
-
-```env
-VITE_GOOGLE_ANALYTICS_ID=your-ga-id-here
-VITE_CONTACT_EMAIL=contato@quantumtecnologia.com.br
-VITE_CONTACT_PHONE=5531993054200
-```
-
-## 🧠 Backend (Node.js + Express)
-
-O diretório [`backend/`](./backend) contém uma API administrativa construída com Express, Prisma ORM e TypeScript. Ela expõe rotas autenticadas sob `/api/admin/*` para gerenciar posts de blog e serviços.
-
-### Configuração de Ambiente
-
-1. Duplique o arquivo [`backend/.env.example`](./backend/.env.example) para `backend/.env`.
-2. Atualize as variáveis conforme necessário:
-
-```env
-DATABASE_URL=postgres://postgres:C@104rm0nd1994@base-de-dados_postgres:5432/QuantumTecnologia?sslmode=disable
-JWT_SECRET=uma-chave-super-secreta
-```
-
-> A API usa `dotenv` para carregar essas variáveis. A conexão PostgreSQL deve possuir o schema `site_quantum`, criado automaticamente pelas migrações.
-
-### Instalação e Scripts
-
-```bash
-cd backend
-npm install
-
-# Desenvolvimento com recarga automática
 npm run dev
 
+# Backend
 # Build de produção
 npm run build
 npm run start
@@ -120,9 +52,11 @@ npm run prisma:generate
 
 ```bash
 cd backend
-npm run migrate
+npm install
+npm run dev
 ```
 
+Cada subprojeto mantém suas próprias dependências, scripts e ferramentas de lint/teste.
 > O comando aplica as migrações e executa `prisma generate` automaticamente para manter o cliente Prisma sincronizado.
 
 
