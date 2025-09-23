@@ -33,9 +33,65 @@ npm install
 npm run dev
 
 # Backend
+# Build de produção
+npm run build
+npm run start
+
+# Executar a suíte de testes
+npm test
+
+# Atualizar o cliente Prisma gerado
+npm run prisma:generate
+
+```
+
+### Banco de Dados e Migrações
+
+- As migrações Prisma estão em [`backend/prisma/migrations`](./backend/prisma/migrations).
+- Para criar o schema `site_quantum` e as tabelas necessárias, execute:
+
+```bash
 cd backend
 npm install
 npm run dev
 ```
 
 Cada subprojeto mantém suas próprias dependências, scripts e ferramentas de lint/teste.
+> O comando aplica as migrações e executa `prisma generate` automaticamente para manter o cliente Prisma sincronizado.
+
+
+As tabelas incluem usuários administradores, posts de blog, serviços e tokens de sessão. Ajuste a string de conexão (`DATABASE_URL`) para apontar para o banco desejado antes de rodar o comando.
+
+### Configurações Adicionais
+
+1. **Google Analytics**: Descomente e configure o ID no `index.html`
+2. **Domínio**: Configure seu domínio personalizado no Easypanel
+3. **SSL**: Ative o certificado SSL automático
+4. **CDN**: Configure cache para assets estáticos
+
+### Scripts Disponíveis
+
+- `npm run dev` - Servidor de desenvolvimento
+- `npm run build` - Build para produção
+- `npm run preview` - Preview do build de produção
+- `npm run lint` - Verificação de código
+
+### SEO e Performance
+
+✅ Meta tags configuradas
+✅ Open Graph tags
+✅ Sitemap (robots.txt)
+✅ Lazy loading de imagens
+✅ Compressão de assets
+✅ Fontes otimizadas (Google Fonts)
+
+### Contato
+
+**Quantum Tecnologia**
+- 📧 contato@quantumtecnologia.com.br
+- 📱 (31) 99305-4200
+- 📍 R. Antônio de Albuquerque, 330 - Sala 901, Savassi - Belo Horizonte, MG
+
+---
+
+Desenvolvido com ❤️ pela equipe Quantum Tecnologia

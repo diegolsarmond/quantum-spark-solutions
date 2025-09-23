@@ -12,6 +12,24 @@ const adminUser = {
   name: 'Admin User',
 };
 
+type PrismaMockError = Error & {
+  code: 'P2002' | 'P2025';
+  clientVersion: string;
+  meta?: Record<string, unknown> | null;
+};
+
+const createPrismaError = (
+  code: PrismaMockError['code'],
+  message = 'Prisma error',
+  meta?: PrismaMockError['meta']
+): PrismaMockError =>
+  Object.assign(new Error(message), {
+    name: 'PrismaClientKnownRequestError',
+    code,
+    clientVersion: '5.13.0',
+    meta: meta ?? null,
+  });
+
 interface SessionRecord {
   id: string;
   token: string;
@@ -70,7 +88,8 @@ const prismaMock = {
     delete: jest.fn(async ({ where }: { where: { id: string } }) => {
       const index = sessions.findIndex((session) => session.id === where.id);
       if (index === -1) {
-        throw new Error('Not found');
+        throw createPrismaError('P2025', 'Session not found');
+
       }
       const [removed] = sessions.splice(index, 1);
       return { ...removed, createdAt: new Date() };
@@ -85,22 +104,30 @@ const prismaMock = {
   },
   blogPost: {
     findMany: jest.fn(async () => posts.slice()),
-    create: jest.fn(async ({ data }: { data: Omit<BlogPostRecord, 'id' | 'createdAt' | 'updatedAt'> & Partial<BlogPostRecord> }) => {
-      const now = new Date();
-      const record: BlogPostRecord = {
-        id: data.id ?? `post-${posts.length + 1}`,
-        title: data.title!,
-        slug: data.slug!,
-        content: data.content!,
-        published: data.published ?? false,
-        publishedAt: data.publishedAt ?? null,
-        authorId: data.authorId ?? null,
-        createdAt: now,
-        updatedAt: now,
-      };
-      posts.push(record);
-      return record;
-    }),
+    create: jest.fn(
+      async ({ data }: { data: Omit<BlogPostRecord, 'id' | 'createdAt' | 'updatedAt'> & Partial<BlogPostRecord> }) => {
+        if (posts.some((post) => post.slug === data.slug)) {
+          throw createPrismaError('P2002', 'Unique constraint failed on the fields: (`slug`)', {
+            target: ['slug'],
+          });
+        }
+        const now = new Date();
+        const record: BlogPostRecord = {
+          id: data.id ?? `post-${posts.length + 1}`,
+          title: data.title!,
+          slug: data.slug!,
+          content: data.content!,
+          published: data.published ?? false,
+          publishedAt: data.publishedAt ?? null,
+          authorId: data.authorId ?? null,
+          createdAt: now,
+          updatedAt: now,
+        };
+        posts.push(record);
+        return record;
+      }
+    ),
+
     findUnique: jest.fn(async ({ where }: { where: { id?: string; slug?: string } }) => {
       if (where.id) {
         return posts.find((post) => post.id === where.id) ?? null;
@@ -113,7 +140,8 @@ const prismaMock = {
     update: jest.fn(async ({ where, data }: { where: { id: string }; data: Partial<BlogPostRecord> }) => {
       const post = posts.find((item) => item.id === where.id);
       if (!post) {
-        throw new Error('Not found');
+        throw createPrismaError('P2025', 'Post not found');
+
       }
       Object.assign(post, data, { updatedAt: new Date() });
       return post;
@@ -121,7 +149,8 @@ const prismaMock = {
     delete: jest.fn(async ({ where }: { where: { id: string } }) => {
       const index = posts.findIndex((post) => post.id === where.id);
       if (index === -1) {
-        throw new Error('Not found');
+        throw createPrismaError('P2025', 'Post not found');
+
       }
       const [removed] = posts.splice(index, 1);
       return removed;
@@ -129,12 +158,13 @@ const prismaMock = {
   },
   service: {
     findMany: jest.fn(async () => services.slice()),
-    create: jest.fn(async ({ data }: { data: Omit<ServiceRecord, 'id' | 'createdAt' | 'updatedAt'> }) => {
+    create: jest.fn(async ({ data }: { data: Omit<ServiceRecord, 'id' | 'createdAt' | 'updatedAt'> & Partial<ServiceRecord> }) => {
       const now = new Date();
       const record: ServiceRecord = {
-        id: `service-${services.length + 1}`,
-        name: data.name,
-        description: data.description,
+        id: data.id ?? `service-${services.length + 1}`,
+        name: data.name!,
+        description: data.description!,
+
         isActive: data.isActive ?? true,
         createdAt: now,
         updatedAt: now,
@@ -145,7 +175,8 @@ const prismaMock = {
     update: jest.fn(async ({ where, data }: { where: { id: string }; data: Partial<ServiceRecord> }) => {
       const service = services.find((item) => item.id === where.id);
       if (!service) {
-        throw new Error('Not found');
+        throw createPrismaError('P2025', 'Service not found');
+
       }
       Object.assign(service, data, { updatedAt: new Date() });
       return service;
@@ -153,7 +184,8 @@ const prismaMock = {
     delete: jest.fn(async ({ where }: { where: { id: string } }) => {
       const index = services.findIndex((service) => service.id === where.id);
       if (index === -1) {
-        throw new Error('Not found');
+        throw createPrismaError('P2025', 'Service not found');
+
       }
       const [removed] = services.splice(index, 1);
       return removed;
@@ -217,7 +249,8 @@ describe('Admin routes', () => {
     expect(listResponse.status).toBe(200);
     expect(listResponse.body).toHaveLength(1);
 
-    const postId = listResponse.body[0].id;
+    const postId = listResponse.body[0].id as string;
+
 
     const deleteResponse = await request(app)
       .delete(`/api/admin/posts/${postId}`)
@@ -226,6 +259,24 @@ describe('Admin routes', () => {
     expect(deleteResponse.status).toBe(204);
     expect(posts).toHaveLength(0);
   });
+
+  it('rejects duplicated blog post slugs', async () => {
+    const token = await authenticate();
+
+    await request(app)
+      .post('/api/admin/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Post', slug: 'duplicate', content: 'One' });
+
+    const duplicateResponse = await request(app)
+      .post('/api/admin/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Another', slug: 'duplicate', content: 'Two' });
+
+    expect(duplicateResponse.status).toBe(409);
+    expect(duplicateResponse.body.message).toContain('Unique constraint failed');
+  });
+
 
   it('updates services data', async () => {
     const token = await authenticate();
@@ -247,6 +298,19 @@ describe('Admin routes', () => {
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body.description).toBe('Updated description');
   });
+
+  it('returns 404 when updating an unknown service', async () => {
+    const token = await authenticate();
+
+    const updateResponse = await request(app)
+      .put('/api/admin/services/missing')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ description: 'Nope' });
+
+    expect(updateResponse.status).toBe(404);
+    expect(updateResponse.body.message).toBe('Record not found');
+  });
+
 
   it('revokes a session on logout', async () => {
     const token = await authenticate();

@@ -123,27 +123,21 @@ adminRouter.put(
   '/posts/:id',
   validateBody(updateBlogPostSchema),
   asyncHandler(async (req, res) => {
-    try {
-      const post = await prisma.blogPost.update({
-        where: { id: req.params.id },
-        data: req.body,
-      });
-      return res.json(post);
-    } catch (error) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+    const post = await prisma.blogPost.update({
+      where: { id: req.params.id },
+      data: req.body,
+    });
+    return res.json(post);
+
   })
 );
 
 adminRouter.delete(
   '/posts/:id',
   asyncHandler(async (req, res) => {
-    try {
-      await prisma.blogPost.delete({ where: { id: req.params.id } });
-      return res.status(204).send();
-    } catch (error) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+    await prisma.blogPost.delete({ where: { id: req.params.id } });
+    return res.status(204).send();
+
   })
 );
 
@@ -176,26 +170,20 @@ adminRouter.put(
   '/services/:id',
   validateBody(updateServiceSchema),
   asyncHandler(async (req, res) => {
-    try {
-      const service = await prisma.service.update({
-        where: { id: req.params.id },
-        data: req.body,
-      });
-      return res.json(service);
-    } catch (error) {
-      return res.status(404).json({ message: 'Service not found' });
-    }
+    const service = await prisma.service.update({
+      where: { id: req.params.id },
+      data: req.body,
+    });
+    return res.json(service);
+
   })
 );
 
 adminRouter.delete(
   '/services/:id',
   asyncHandler(async (req, res) => {
-    try {
-      await prisma.service.delete({ where: { id: req.params.id } });
-      return res.status(204).send();
-    } catch (error) {
-      return res.status(404).json({ message: 'Service not found' });
-    }
+    await prisma.service.delete({ where: { id: req.params.id } });
+    return res.status(204).send();
+
   })
 );
