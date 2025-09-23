@@ -107,6 +107,10 @@ npm run start
 
 # Executar a suíte de testes
 npm test
+
+# Atualizar o cliente Prisma gerado
+npm run prisma:generate
+
 ```
 
 ### Banco de Dados e Migrações
@@ -118,6 +122,9 @@ npm test
 cd backend
 npm run migrate
 ```
+
+> O comando aplica as migrações e executa `prisma generate` automaticamente para manter o cliente Prisma sincronizado.
+
 
 As tabelas incluem usuários administradores, posts de blog, serviços e tokens de sessão. Ajuste a string de conexão (`DATABASE_URL`) para apontar para o banco desejado antes de rodar o comando.
 
