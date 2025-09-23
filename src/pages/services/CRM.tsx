@@ -131,7 +131,7 @@ const CRM = () => {
       service: "crm",
       source
     });
-    window.open("https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre a suíte de CRMs da Quantum.", "_blank");
+    window.open("https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre a suíte de CRMs da Quantum.", "_blank");
   };
 
   return (

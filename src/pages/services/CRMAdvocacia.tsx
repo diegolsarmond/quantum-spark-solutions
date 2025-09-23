@@ -199,7 +199,7 @@ const CRMAdvocacia = () => {
       source
     });
     window.open(
-      "https://wa.me/5531993054200?text=Olá! Gostaria de conhecer o CRM da Quantum para escritórios de advocacia.",
+      "https://wa.me/553193054200?text=Olá! Gostaria de conhecer o CRM da Quantum para escritórios de advocacia.",
       "_blank"
     );
   };

@@ -239,7 +239,7 @@ const CRMAdvogados = () => {
                         'source': 'crm_section'
                       });
                     }
-                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de iniciar o teste grátis de 14 dias do CRM para advogados.', '_blank');
+                    window.open('https://wa.me/553193054200?text=Olá! Gostaria de iniciar o teste grátis de 14 dias do CRM para advogados.', '_blank');
                   }}
                 >
                   Teste Grátis por 14 dias

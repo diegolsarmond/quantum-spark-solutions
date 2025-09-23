@@ -108,7 +108,7 @@ const AssistenteIA = () => {
                       'service': 'assistente_ia'
                     });
                   }
-                  window.open('https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre o Assistente Virtual com IA.', '_blank');
+                  window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre o Assistente Virtual com IA.', '_blank');
                 }}
               >
                 Falar no WhatsApp
@@ -236,7 +236,7 @@ const AssistenteIA = () => {
                         'source': 'cta_section'
                       });
                     }
-                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de agendar uma demonstração do Assistente Virtual com IA.', '_blank');
+                    window.open('https://wa.me/553193054200?text=Olá! Gostaria de agendar uma demonstração do Assistente Virtual com IA.', '_blank');
                   }}
                 >
                   Ver Demonstração

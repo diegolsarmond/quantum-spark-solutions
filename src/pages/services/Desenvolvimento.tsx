@@ -137,7 +137,7 @@ const Desenvolvimento = () => {
                       'service': 'desenvolvimento'
                     });
                   }
-                  window.open('https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre Desenvolvimento Sob Medida.', '_blank');
+                  window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre Desenvolvimento Sob Medida.', '_blank');
                 }}
               >
                 Falar no WhatsApp
@@ -378,7 +378,7 @@ const Desenvolvimento = () => {
                         'service': 'desenvolvimento'
                       });
                     }
-                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de ver o portfólio de projetos da Quantum Tecnologia.', '_blank');
+                    window.open('https://wa.me/553193054200?text=Olá! Gostaria de ver o portfólio de projetos da Quantum Tecnologia.', '_blank');
                   }}
                 >
                   Ver Portfólio

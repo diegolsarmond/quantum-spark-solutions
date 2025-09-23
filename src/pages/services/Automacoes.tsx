@@ -112,7 +112,7 @@ const Automacoes = () => {
                       'service': 'automacoes'
                     });
                   }
-                  window.open('https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre Automações Empresariais.', '_blank');
+                  window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre Automações Empresariais.', '_blank');
                 }}
               >
                 Falar no WhatsApp
@@ -311,7 +311,7 @@ const Automacoes = () => {
                         'service': 'automacoes'
                       });
                     }
-                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de ver cases de automação da Quantum Tecnologia.', '_blank');
+                    window.open('https://wa.me/553193054200?text=Olá! Gostaria de ver cases de automação da Quantum Tecnologia.', '_blank');
                   }}
                 >
                   Ver Cases de Sucesso

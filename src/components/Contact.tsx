@@ -172,7 +172,7 @@ const Contact = () => {
                           'source': 'contact_section'
                         });
                       }
-                      window.open('https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre os serviços da Quantum Tecnologia.', '_blank');
+                      window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre os serviços da Quantum Tecnologia.', '_blank');
                     }}
                   >
                     WhatsApp
@@ -184,7 +184,7 @@ const Contact = () => {
                           'source': 'contact_section'
                         });
                       }
-                      window.open('tel:5531993054200', '_self');
+                      window.open('tel:553193054200', '_self');
                     }}
                   >
                     Ligar Agora

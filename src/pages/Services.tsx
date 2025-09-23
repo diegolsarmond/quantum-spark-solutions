@@ -149,7 +149,7 @@ const ServicesPage = () => {
                   variant="outline_quantum"
                   size="xl"
                   className="bg-white/10 border-white/30 text-white hover:bg-white/80 hover:text-quantum-deep"
-                  onClick={() => window.open("https://wa.me/5531993054200?text=Olá! Quero transformar minha operação com a Quantum.", "_blank")}
+                  onClick={() => window.open("https://wa.me/553193054200?text=Olá! Quero transformar minha operação com a Quantum.", "_blank")}
                 >
                   Conversar no WhatsApp
                 </Button>
