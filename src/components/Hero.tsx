@@ -4,11 +4,32 @@ import { ArrowRight, Zap, Bot, Code } from "lucide-react";
 const Hero = () => {
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-gradient-to-br from-quantum-bright/20 to-transparent"></div>
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-quantum-cyan/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-quantum-bright/10 rounded-full blur-3xl"></div>
+      {/* Advanced Background Effects */}
+      <div className="absolute inset-0">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-quantum-bright/20 via-quantum-cyan/10 to-transparent animate-pulse-slow"></div>
+        
+        {/* Floating orbs with animation */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-quantum-cyan/20 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-quantum-bright/15 rounded-full blur-3xl animate-float opacity-70" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-quantum-cyan/15 rounded-full blur-2xl animate-float opacity-50" style={{animationDelay: '4s'}}></div>
+        
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--quantum-cyan)) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+        
+        {/* Animated particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-1/3 w-2 h-2 bg-quantum-cyan/40 rounded-full animate-ping" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-quantum-bright/60 rounded-full animate-ping" style={{animationDelay: '3s'}}></div>
+          <div className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 bg-quantum-cyan/50 rounded-full animate-ping" style={{animationDelay: '5s'}}></div>
+          <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-quantum-bright/40 rounded-full animate-ping" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        {/* Glow effects */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-quantum-bright/5 to-transparent animate-pulse-glow"></div>
       </div>
       
       <div className="container px-4 text-center text-white relative z-10">

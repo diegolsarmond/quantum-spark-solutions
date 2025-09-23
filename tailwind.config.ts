@@ -108,10 +108,30 @@ export default {
             height: "0",
           },
         },
+        "pulse-slow": {
+          "0%, 100%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "0.7",
+          },
+        },
+        "pulse-glow": {
+          "0%, 100%": {
+            opacity: "0.3",
+            transform: "translateX(-100%)",
+          },
+          "50%": {
+            opacity: "0.8",
+            transform: "translateX(100%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-slow": "pulse-slow 4s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 6s ease-in-out infinite",
       },
     },
   },

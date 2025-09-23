@@ -119,33 +119,37 @@ const Contact = () => {
 
           {/* Contact Information */}
           <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {contactInfo.map((info, index) => (
-                <Card 
-                  key={index} 
-                  className="bg-gradient-card border-quantum-light/20 hover:shadow-card transition-all duration-300 group hover:-translate-y-1"
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="p-3 rounded-full bg-gradient-quantum group-hover:scale-110 transition-transform duration-300">
-                        <info.icon className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-quantum-bright transition-colors">
-                          {info.title}
-                        </h3>
-                        <p className="text-foreground font-medium mb-1">
-                          {info.info}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {info.description}
-                        </p>
-                      </div>
+            {/* Unified Contact Card */}
+            <Card className="bg-gradient-card border-quantum-light/20 hover:shadow-card transition-all duration-300 group hover:-translate-y-1">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-foreground">
+                  Informações de Contato
+                </CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Entre em contato conosco pelos canais abaixo
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {contactInfo.map((info, index) => (
+                  <div key={index} className="flex items-start space-x-4 p-4 rounded-lg bg-background/50 hover:bg-background/70 transition-colors">
+                    <div className="p-3 rounded-full bg-gradient-quantum group-hover:scale-110 transition-transform duration-300">
+                      <info.icon className="h-5 w-5 text-white" />
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground mb-1 group-hover:text-quantum-bright transition-colors">
+                        {info.title}
+                      </h3>
+                      <p className="text-foreground font-medium mb-1 break-words">
+                        {info.info}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {info.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
 
             {/* Call to Action */}
             <Card className="bg-gradient-quantum text-white border-0 shadow-quantum">
