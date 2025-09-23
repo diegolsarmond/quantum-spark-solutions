@@ -46,10 +46,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-quantum-cyan">CRM</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Starter</a></li>
-              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Professional</a></li>
-              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Enterprise</a></li>
-              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Soluções Personalizadas</a></li>
+              <li><a href="/servicos/crm#crm-advogados" className="hover:text-white transition-colors">Plano Starter</a></li>
+              <li><a href="/servicos/crm#crm-advogados" className="hover:text-white transition-colors">Plano Professional</a></li>
+              <li><a href="/servicos/crm#crm-advogados" className="hover:text-white transition-colors">Plano Enterprise</a></li>
+              <li><a href="/servicos/crm#crm-advogados" className="hover:text-white transition-colors">Soluções Personalizadas</a></li>
             </ul>
           </div>
 
