@@ -130,14 +130,21 @@ const CRMAdvogados = () => {
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`relative overflow-hidden transition-all duration-500 group hover:-translate-y-4 ${
+              className={`relative overflow-hidden transition-all duration-300 group hover:-translate-y-2 ${
                 plan.highlight 
-                  ? 'border-quantum-bright/40 shadow-quantum scale-105 animate-pulse-glow' 
+                  ? 'border-quantum-bright/50 shadow-quantum scale-105 ring-1 ring-quantum-bright/20' 
                   : 'border-quantum-light/20 hover:shadow-card'
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-quantum-bright to-transparent"></div>
+                <>
+                  <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-quantum-bright to-transparent"></div>
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-quantum-bright text-white">
+                      Mais Popular
+                    </span>
+                  </div>
+                </>
               )}
               
               <CardHeader className="text-center pb-8">
