@@ -1,4 +1,6 @@
 
+import { useMemo } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
@@ -20,6 +22,8 @@ import {
   Sparkle,
   CheckCircle2
 } from "lucide-react";
+import { useServiceBySlug } from "@/hooks/useServices";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type GtagFunction = (...args: unknown[]) => void;
 
@@ -32,32 +36,59 @@ const getGtag = (): GtagFunction | undefined => {
 };
 
 const CRM = () => {
-  const generalFeatures = [
-    {
-      icon: Zap,
-      title: "Automação Inteligente",
-      description:
-        "Automatize cadastros, follow-ups e fluxos de relacionamento com regras configuráveis e integrações nativas."
-    },
-    {
-      icon: MessageSquare,
-      title: "Atendimento Omnicanal",
-      description:
-        "Converse com clientes por e-mail, telefone, WhatsApp e chatbots em uma visão unificada da jornada."
-    },
-    {
-      icon: BarChart3,
-      title: "BI & Insights",
-      description:
-        "Dashboards em tempo real com indicadores de performance comercial, produtividade e previsibilidade de receita."
-    },
-    {
-      icon: Shield,
-      title: "Segurança Corporativa",
-      description:
-        "Criptografia ponta a ponta, controles de acesso granulares e infraestrutura hospedada em nuvem brasileira."
+  const { data: service, isLoading: isServiceLoading, isError: isServiceError } = useServiceBySlug("crm");
+
+  const generalFeatures = useMemo(
+    () => [
+      {
+        icon: Zap,
+        title: "Automação Inteligente",
+        description:
+          "Automatize cadastros, follow-ups e fluxos de relacionamento com regras configuráveis e integrações nativas.",
+      },
+      {
+        icon: MessageSquare,
+        title: "Atendimento Omnicanal",
+        description:
+          "Converse com clientes por e-mail, telefone, WhatsApp e chatbots em uma visão unificada da jornada.",
+      },
+      {
+        icon: BarChart3,
+        title: "BI & Insights",
+        description:
+          "Dashboards em tempo real com indicadores de performance comercial, produtividade e previsibilidade de receita.",
+      },
+      {
+        icon: Shield,
+        title: "Segurança Corporativa",
+        description:
+          "Criptografia ponta a ponta, controles de acesso granulares e infraestrutura hospedada em nuvem brasileira.",
+      },
+    ],
+    [],
+  );
+
+  const featureCards = useMemo(() => {
+    if (!service?.features?.length) {
+      return generalFeatures;
     }
-  ];
+
+    return service.features.map((featureText, index) => {
+      const [titlePart, descriptionPart] = featureText.split("|").map((part) => part.trim());
+      const fallback = generalFeatures[index % generalFeatures.length];
+      return {
+        icon: fallback.icon,
+        title: titlePart?.length ? titlePart : fallback.title,
+        description: descriptionPart?.length ? descriptionPart : service.description ?? fallback.description,
+      };
+    });
+  }, [generalFeatures, service]);
+
+  const heroLabel = service?.title ?? "Suíte Completa de CRM Quantum";
+  const heroHeadline = service?.summary ?? "Relacionamentos Inteligentes em Todos os Canais";
+  const heroDescription =
+    service?.description ??
+    "Estruture jornadas personalizadas, automatize o contato com clientes e tenha visibilidade total do funil de vendas em uma plataforma moderna e segura.";
 
   const industries = [
     {
@@ -147,14 +178,10 @@ const CRM = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium rounded-full bg-white/15 backdrop-blur animate-pulse-glow">
               <Sparkle className="h-4 w-4 mr-2" />
-              Suíte Completa de CRM Quantum
+              {heroLabel}
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Relacionamentos Inteligentes em Todos os Canais
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">
-              Estruture jornadas personalizadas, automatize o contato com clientes e tenha visibilidade total do funil de vendas em uma plataforma moderna e segura.
-            </p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">{heroHeadline}</h1>
+            <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">{heroDescription}</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
                 variant="quantum"
@@ -189,27 +216,47 @@ const CRM = () => {
               Operações modernas precisam de automação, dados confiáveis e atendimento conectado. Nossa suíte de CRM entrega isso desde o primeiro dia.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {generalFeatures.map((feature, index) => (
-              <Card
-                key={feature.title}
-                className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2 animate-float"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <CardHeader>
-                  <div className="p-4 rounded-full bg-gradient-quantum w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <feature.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+          {isServiceError && (
+            <div className="mb-8 rounded-lg border border-amber-200/60 bg-amber-50/10 p-4 text-sm text-amber-200 text-center">
+              Não foi possível carregar os recursos personalizados do CRM. Exibindo a versão padrão.
+            </div>
+          )}
+
+          {isServiceLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="bg-gradient-card border-quantum-light/20">
+                  <CardHeader>
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <Skeleton className="h-6 w-2/3" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featureCards.map((feature, index) => (
+                <Card
+                  key={feature.title + index}
+                  className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2 animate-float"
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                >
+                  <CardHeader>
+                    <div className="p-4 rounded-full bg-gradient-quantum w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <feature.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
+                      {feature.title}
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

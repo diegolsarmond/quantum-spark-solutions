@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { blogPosts, type BlogPost } from "@/data/blogPosts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useBlogPosts, type BlogPost } from "@/hooks/useBlogPosts";
 import { cn } from "@/lib/utils";
 import { trackEvent } from "@/lib/analytics";
 
@@ -18,10 +19,11 @@ const BlogPage = () => {
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<string>("Todos");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const { data: blogPosts = [], isLoading, isError } = useBlogPosts();
 
   const categories = useMemo(() => {
     return ["Todos", ...new Set(blogPosts.map((post) => post.category))];
-  }, []);
+  }, [blogPosts]);
 
   const filteredPosts = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -42,7 +44,7 @@ const BlogPage = () => {
         post.tags.some((tag) => tag.toLowerCase().includes(normalizedSearch))
       );
     });
-  }, [activeCategory, searchTerm]);
+  }, [activeCategory, blogPosts, searchTerm]);
 
   const featuredPost = useMemo(() => {
     if (filteredPosts.length === 0) {
@@ -62,7 +64,7 @@ const BlogPage = () => {
 
   const trendingPosts = useMemo(() => {
     return blogPosts.filter((post) => post.slug !== featuredPost?.slug).slice(0, 3);
-  }, [featuredPost]);
+  }, [blogPosts, featuredPost]);
 
   const topTags = useMemo(() => {
     const counts = new Map<string, number>();
@@ -77,7 +79,7 @@ const BlogPage = () => {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 6)
       .map(([tag]) => tag);
-  }, []);
+  }, [blogPosts]);
 
   const handleNavigateToPost = (post: BlogPost) => {
     trackEvent("blog_post_click", {
@@ -169,6 +171,7 @@ const BlogPage = () => {
                         : "border-quantum-bright/30 text-foreground hover:border-quantum-bright"
                     )}
                     onClick={() => setActiveCategory(category)}
+                    disabled={isLoading}
                   >
                     {category}
                   </Button>
@@ -179,7 +182,51 @@ const BlogPage = () => {
         </section>
 
         <section className="container px-4 py-16 space-y-16">
-          {featuredPost ? (
+          {isLoading ? (
+            <div className="grid gap-10 lg:grid-cols-[2fr,1fr]">
+              <Card className="relative overflow-hidden rounded-3xl border-0 bg-background/80">
+                <Skeleton className="h-72 w-full" />
+                <CardHeader className="space-y-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                </CardHeader>
+              </Card>
+              <aside className="space-y-6">
+                <Card className="rounded-3xl">
+                  <CardHeader>
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-48" />
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <Skeleton key={index} className="h-12 w-full" />
+                    ))}
+                  </CardContent>
+                </Card>
+                <Card className="rounded-3xl">
+                  <CardHeader>
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-40" />
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap gap-3">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                      <Skeleton key={index} className="h-7 w-16 rounded-full" />
+                    ))}
+                  </CardContent>
+                </Card>
+              </aside>
+            </div>
+          ) : isError ? (
+            <Card className="rounded-3xl border-destructive/40 bg-destructive/10">
+              <CardHeader className="space-y-4 text-destructive">
+                <CardTitle className="text-2xl">Não foi possível carregar os artigos</CardTitle>
+                <CardDescription>
+                  Houve um erro ao buscar o conteúdo do blog. Atualize a página ou tente novamente mais tarde.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          ) : featuredPost ? (
             <div className="grid gap-10 lg:grid-cols-[2fr,1fr]">
               <Card
                 id={featuredPost.slug}

@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Crown, Building2, ArrowRight, Users, FileText, Shield, BarChart3 } from "lucide-react";
 import SimpleBackground from "@/components/ui/SimpleBackground";
+import { getGtag } from "@/lib/gtag";
 
 const CRMAdvogados = () => {
   const plans = [
@@ -177,18 +178,16 @@ const CRMAdvogados = () => {
                   ))}
                 </ul>
                 
-                <Button 
-                  variant={plan.highlight ? "quantum" : "outline_quantum"} 
-                  size="lg" 
+                <Button
+                  variant={plan.highlight ? "quantum" : "outline_quantum"}
+                  size="lg"
                   className="w-full group track-link"
                   onClick={() => {
-                    // Analytics tracking
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'crm_plan_click', {
-                        'plan_name': plan.name,
-                        'plan_price': plan.price
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'crm_plan_click', {
+                      plan_name: plan.name,
+                      plan_price: plan.price,
+                    });
                     // Scroll to contact
                     document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -213,32 +212,30 @@ const CRMAdvogados = () => {
                 Fale conosco e descubra como podemos criar a solução perfeita para seu escritório.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'custom_crm_click', {
-                        'source': 'crm_section'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'custom_crm_click', {
+                      source: 'crm_section',
+                    });
                     document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
                   Solicitar Orçamento Personalizado
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'demo_request', {
-                        'source': 'crm_section'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'demo_request', {
+                      source: 'crm_section',
+                    });
                     window.open('https://wa.me/553193054200?text=Olá! Gostaria de iniciar o teste grátis de 14 dias do CRM para advogados.', '_blank');
                   }}
                 >

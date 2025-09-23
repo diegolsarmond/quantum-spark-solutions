@@ -17,7 +17,6 @@ import BlogPage from "./pages/Blog";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminLayout from "./pages/admin/AdminLayout";
-import Dashboard from "./pages/admin/Dashboard";
 import BlogManager from "./pages/admin/BlogManager";
 import ServiceManager from "./pages/admin/ServiceManager";
 
@@ -43,7 +42,11 @@ const App = () => (
             <Route path="/admin">
               <Route path="login" element={<AdminLogin />} />
               <Route element={<RequireAuth permissions={["admin:access"]} />}>
-                <Route index element={<AdminDashboard />} />
+                <Route element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="blog" element={<BlogManager />} />
+                  <Route path="servicos" element={<ServiceManager />} />
+                </Route>
               </Route>
             </Route>
 

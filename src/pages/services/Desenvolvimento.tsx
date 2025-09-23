@@ -1,10 +1,16 @@
+import { useMemo } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code2, Smartphone, Globe, Database, ArrowRight, CheckCircle, Layers, Zap } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useServiceBySlug } from "@/hooks/useServices";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Desenvolvimento = () => {
+  const { data: service, isLoading: isServiceLoading, isError: isServiceError } = useServiceBySlug("desenvolvimento");
+
   const technologies = [
     {
       icon: Globe,
@@ -28,7 +34,8 @@ const Desenvolvimento = () => {
     }
   ];
 
-  const services = [
+  const fallbackSolutions = useMemo(
+    () => [
     {
       title: "Sistemas de Gestão (ERP/CRM)",
       description: "Plataformas completas para gestão empresarial",
@@ -48,8 +55,36 @@ const Desenvolvimento = () => {
       title: "Fintech e Payments",
       description: "Soluções financeiras e sistemas de pagamento",
       features: ["Open Banking", "PIX integrado", "Compliance", "Segurança bancária"]
+    },
+  ],
+    [],
+  );
+
+  const solutionCards = useMemo(() => {
+    if (!service?.features?.length) {
+      return fallbackSolutions;
     }
-  ];
+
+    return service.features.map((featureText, index) => {
+      const parts = featureText.split("|").map((part) => part.trim());
+      const [titlePart, descriptionPart, featuresPart] = parts;
+      const fallback = fallbackSolutions[index % fallbackSolutions.length];
+      const parsedFeatures = featuresPart
+        ? featuresPart.split(";").map((feature) => feature.trim()).filter(Boolean)
+        : fallback.features;
+      return {
+        title: titlePart?.length ? titlePart : fallback.title,
+        description: descriptionPart?.length ? descriptionPart : service.description ?? fallback.description,
+        features: parsedFeatures.length ? parsedFeatures : fallback.features,
+      };
+    });
+  }, [fallbackSolutions, service]);
+
+  const heroLabel = service?.title ?? "Desenvolvimento Sob Medida";
+  const heroHeadline = service?.summary ?? "Software Personalizado para seu Negócio";
+  const heroDescription =
+    service?.description ??
+    "Desenvolvemos soluções de software únicas e escaláveis, perfeitamente alinhadas com seus processos e objetivos de negócio.";
 
   const process = [
     {
@@ -101,42 +136,35 @@ const Desenvolvimento = () => {
           <div className="max-w-4xl mx-auto text-center text-white">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/20 text-sm font-medium mb-6 animate-pulse-glow">
               <Code2 className="h-4 w-4 mr-2" />
-              Desenvolvimento Sob Medida
+              {heroLabel}
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Software Personalizado para seu Negócio
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Desenvolvemos soluções de software únicas e escaláveis, 
-              perfeitamente alinhadas com seus processos e objetivos de negócio.
-            </p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">{heroHeadline}</h1>
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">{heroDescription}</p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button 
-                variant="outline_quantum" 
-                size="xl" 
+              <Button
+                variant="outline_quantum"
+                size="xl"
                 className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                 onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'project_consultation_click', {
-                      'service': 'desenvolvimento'
-                    });
-                  }
+                  const gtag = getGtag();
+                  gtag?.('event', 'project_consultation_click', {
+                    service: 'desenvolvimento',
+                  });
                   document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
                 Consultoria de Projeto
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
-              <Button 
-                variant="outline_quantum" 
-                size="xl" 
+              <Button
+                variant="outline_quantum"
+                size="xl"
                 className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                 onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'whatsapp_click', {
-                      'service': 'desenvolvimento'
-                    });
-                  }
+                  const gtag = getGtag();
+                  gtag?.('event', 'whatsapp_click', {
+                    service: 'desenvolvimento',
+                  });
                   window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre Desenvolvimento Sob Medida.', '_blank');
                 }}
               >
@@ -222,33 +250,59 @@ const Desenvolvimento = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <Card 
-                key={index} 
-                className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2"
-              >
-                <CardHeader>
-                  <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
-                    {service.title}
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center space-x-2">
-                        <CheckCircle className="h-4 w-4 text-quantum-bright flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {isServiceError && (
+            <div className="mb-8 rounded-lg border border-amber-200/60 bg-amber-50/10 p-4 text-sm text-amber-700">
+              Não foi possível carregar as soluções configuradas. Exibindo a versão padrão.
+            </div>
+          )}
+
+          {isServiceLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="bg-gradient-card border-quantum-light/20">
+                  <CardHeader>
+                    <Skeleton className="h-6 w-2/3" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {Array.from({ length: 4 }).map((__, idx) => (
+                        <Skeleton key={idx} className="h-3 w-full" />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {solutionCards.map((solution, index) => (
+                <Card
+                  key={solution.title + index}
+                  className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2"
+                >
+                  <CardHeader>
+                    <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
+                      {solution.title}
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      {solution.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {solution.features.map((feature) => (
+                        <li key={feature} className="flex items-center space-x-2">
+                          <CheckCircle className="h-4 w-4 text-quantum-bright flex-shrink-0" />
+                          <span className="text-sm text-muted-foreground">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -351,33 +405,31 @@ const Desenvolvimento = () => {
                 com prazo e investimento personalizados.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'contact_click', {
-                        'service': 'desenvolvimento',
-                        'source': 'cta_section'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'contact_click', {
+                      service: 'desenvolvimento',
+                      source: 'cta_section',
+                    });
                     window.location.href = '/#contato';
                   }}
                 >
                   Solicitar Proposta
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'portfolio_request', {
-                        'service': 'desenvolvimento'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'portfolio_request', {
+                      service: 'desenvolvimento',
+                    });
                     window.open('https://wa.me/553193054200?text=Olá! Gostaria de ver o portfólio de projetos da Quantum Tecnologia.', '_blank');
                   }}
                 >
