@@ -12,6 +12,10 @@ import CRMAdvocacia from "./pages/services/CRMAdvocacia";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
 import ServicesPage from "./pages/Services";
 import BlogPage from "./pages/Blog";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import BlogManager from "./pages/admin/BlogManager";
+import ServiceManager from "./pages/admin/ServiceManager";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,11 @@ const App = () => (
           <Route path="/servicos/crm" element={<CRM />} />
           <Route path="/servicos/crm/advocacia" element={<CRMAdvocacia />} />
           <Route path="/servicos/desenvolvimento" element={<Desenvolvimento />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="blog" element={<BlogManager />} />
+            <Route path="servicos" element={<ServiceManager />} />
+          </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
