@@ -39,7 +39,7 @@ const Hero = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="flex flex-col items-center space-y-4 group">
               <div className="p-4 rounded-full bg-white/10 backdrop-blur group-hover:bg-white/20 transition-all duration-300">
-                <Bot className="h-8 w-8 text-quantum-cyan" />
+                <Bot className="h-8 w-8 text-quantum-deep" />
               </div>
               <h3 className="text-lg font-semibold">IA & Assistentes Virtuais</h3>
               <p className="text-white/80 text-center">Automatize conversas e processos com inteligência artificial avançada</p>
@@ -47,7 +47,7 @@ const Hero = () => {
             
             <div className="flex flex-col items-center space-y-4 group">
               <div className="p-4 rounded-full bg-white/10 backdrop-blur group-hover:bg-white/20 transition-all duration-300">
-                <Zap className="h-8 w-8 text-quantum-cyan" />
+                <Zap className="h-8 w-8 text-quantum-deep" />
               </div>
               <h3 className="text-lg font-semibold">Automações Empresariais</h3>
               <p className="text-white/80 text-center">Otimize processos e aumente a eficiência da sua empresa</p>
@@ -55,7 +55,7 @@ const Hero = () => {
             
             <div className="flex flex-col items-center space-y-4 group">
               <div className="p-4 rounded-full bg-white/10 backdrop-blur group-hover:bg-white/20 transition-all duration-300">
-                <Code className="h-8 w-8 text-quantum-cyan" />
+                <Code className="h-8 w-8 text-quantum-deep" />
               </div>
               <h3 className="text-lg font-semibold">Desenvolvimento Sob Medida</h3>
               <p className="text-white/80 text-center">Soluções personalizadas para as necessidades do seu negócio</p>
