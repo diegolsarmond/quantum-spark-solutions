@@ -1,51 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
 import SimpleBackground from "@/components/ui/SimpleBackground";
+import { blogPosts } from "@/data/blogPosts";
+import { trackEvent } from "@/lib/analytics";
 
 const Blog = () => {
-  const blogPosts = [
-    {
-      title: "Como a IA está Revolucionando o Atendimento ao Cliente",
-      description: "Descubra como os assistentes virtuais com IA podem transformar completamente a experiência do seu cliente e aumentar a eficiência operacional.",
-      author: "Equipe Quantum",
-      date: "15 Jan 2025",
-      readTime: "5 min",
-      category: "Inteligência Artificial",
-      image: "/api/placeholder/400/250",
-      slug: "ia-revolucionando-atendimento"
-    },
-    {
-      title: "Automação de Processos: O Futuro das Empresas",
-      description: "Entenda como a automação pode eliminar tarefas repetitivas, reduzir erros e liberar sua equipe para atividades mais estratégicas.",
-      author: "Equipe Quantum",
-      date: "12 Jan 2025", 
-      readTime: "7 min",
-      category: "Automação",
-      image: "/api/placeholder/400/250",
-      slug: "automacao-processos-futuro"
-    },
-    {
-      title: "CRM para Advogados: Gestão Eficiente de Escritórios",
-      description: "Como um sistema CRM especializado pode otimizar a gestão de processos jurídicos e melhorar o relacionamento com clientes.",
-      author: "Equipe Quantum",
-      date: "10 Jan 2025",
-      readTime: "6 min", 
-      category: "CRM",
-      image: "/api/placeholder/400/250",
-      slug: "crm-advogados-gestao"
-    },
-    {
-      title: "Desenvolvimento Sob Medida: Quando Escolher?",
-      description: "Saiba quando investir em soluções personalizadas e como elas podem oferecer vantagem competitiva para seu negócio.",
-      author: "Equipe Quantum",
-      date: "08 Jan 2025",
-      readTime: "4 min",
-      category: "Desenvolvimento",
-      image: "/api/placeholder/400/250", 
-      slug: "desenvolvimento-sob-medida"
-    }
-  ];
+  const navigate = useNavigate();
+  const highlightPosts = blogPosts.slice(0, 4);
 
   return (
     <section id="blog" className="py-20 relative overflow-hidden">
@@ -64,9 +28,9 @@ const Blog = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
-          {blogPosts.map((post, index) => (
-            <Card 
-              key={index} 
+          {highlightPosts.map((post, index) => (
+            <Card
+              key={index}
               className="group overflow-hidden bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 hover:-translate-y-2"
             >
               <div className="aspect-video bg-gradient-quantum relative overflow-hidden">
@@ -105,18 +69,15 @@ const Blog = () => {
               </CardHeader>
               
               <CardContent>
-                <Button 
-                  variant="outline_quantum" 
+                <Button
+                  variant="outline_quantum"
                   className="w-full group/btn track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'blog_post_click', {
-                        'post_title': post.title,
-                        'post_category': post.category
-                      });
-                    }
-                    // Future: Navigate to blog post page
-                    console.log('Navigate to:', post.slug);
+                    trackEvent('blog_post_click', {
+                      post_title: post.title,
+                      post_category: post.category,
+                    });
+                    navigate(`/blog#${post.slug}`);
                   }}
                 >
                   Ler Artigo
@@ -128,18 +89,15 @@ const Blog = () => {
         </div>
 
         <div className="text-center">
-          <Button 
-            variant="quantum" 
+          <Button
+            variant="quantum"
             size="xl"
             className="track-link"
             onClick={() => {
-              if (typeof window !== 'undefined' && (window as any).gtag) {
-                (window as any).gtag('event', 'view_all_posts_click', {
-                  'source': 'blog_section'
-                });
-              }
-              // Future: Navigate to blog page
-              console.log('Navigate to blog page');
+              trackEvent('view_all_posts_click', {
+                source: 'blog_section',
+              });
+              navigate('/blog');
             }}
           >
             Ver Todos os Artigos

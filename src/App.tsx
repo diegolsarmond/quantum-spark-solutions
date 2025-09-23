@@ -9,7 +9,7 @@ import AssistenteIA from "./pages/services/AssistenteIA";
 import Automacoes from "./pages/services/Automacoes";
 import CRM from "./pages/services/CRM";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
-import CRM from "./pages/services/CRM";
+import BlogPage from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -21,11 +21,11 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/servicos/assistente-ia" element={<AssistenteIA />} />
           <Route path="/servicos/automacoes" element={<Automacoes />} />
           <Route path="/servicos/crm" element={<CRM />} />
           <Route path="/servicos/desenvolvimento" element={<Desenvolvimento />} />
-          <Route path="/servicos/crm" element={<CRM />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
