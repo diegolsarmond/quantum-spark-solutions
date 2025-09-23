@@ -76,6 +76,51 @@ VITE_CONTACT_EMAIL=contato@quantumtecnologia.com.br
 VITE_CONTACT_PHONE=5531993054200
 ```
 
+## 🧠 Backend (Node.js + Express)
+
+O diretório [`backend/`](./backend) contém uma API administrativa construída com Express, Prisma ORM e TypeScript. Ela expõe rotas autenticadas sob `/api/admin/*` para gerenciar posts de blog e serviços.
+
+### Configuração de Ambiente
+
+1. Duplique o arquivo [`backend/.env.example`](./backend/.env.example) para `backend/.env`.
+2. Atualize as variáveis conforme necessário:
+
+```env
+DATABASE_URL=postgres://postgres:C@104rm0nd1994@base-de-dados_postgres:5432/QuantumTecnologia?sslmode=disable
+JWT_SECRET=uma-chave-super-secreta
+```
+
+> A API usa `dotenv` para carregar essas variáveis. A conexão PostgreSQL deve possuir o schema `site_quantum`, criado automaticamente pelas migrações.
+
+### Instalação e Scripts
+
+```bash
+cd backend
+npm install
+
+# Desenvolvimento com recarga automática
+npm run dev
+
+# Build de produção
+npm run build
+npm run start
+
+# Executar a suíte de testes
+npm test
+```
+
+### Banco de Dados e Migrações
+
+- As migrações Prisma estão em [`backend/prisma/migrations`](./backend/prisma/migrations).
+- Para criar o schema `site_quantum` e as tabelas necessárias, execute:
+
+```bash
+cd backend
+npm run migrate
+```
+
+As tabelas incluem usuários administradores, posts de blog, serviços e tokens de sessão. Ajuste a string de conexão (`DATABASE_URL`) para apontar para o banco desejado antes de rodar o comando.
+
 ### Configurações Adicionais
 
 1. **Google Analytics**: Descomente e configure o ID no `index.html`
