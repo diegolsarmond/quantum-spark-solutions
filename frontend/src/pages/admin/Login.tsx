@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { type AuthUser, useAuth } from "@/hooks/useAuth";
+import { getAdminApiBaseUrl } from "@/utils/getAdminApiBaseUrl";
 
 const loginSchema = z.object({
   email: z
@@ -32,14 +33,6 @@ type AuthResponse = {
 type LocationState = {
   from?: { pathname?: string };
   unauthorized?: boolean;
-};
-
-const normalizeApiBaseUrl = (baseUrl: string | undefined) => {
-  if (!baseUrl) {
-    return "/api/admin";
-  }
-
-  return baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
 };
 
 const LoginPage = () => {
@@ -69,7 +62,7 @@ const LoginPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
-      const baseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
       const response = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: {

@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { getAdminApiBaseUrl } from "@/utils/getAdminApiBaseUrl";
 
 const registerSchema = z
   .object({
@@ -30,14 +31,6 @@ const registerSchema = z
     path: ["confirmPassword"],
     message: "As senhas precisam coincidir.",
   });
-
-const normalizeApiBaseUrl = (baseUrl: string | undefined) => {
-  if (!baseUrl) {
-    return "/api/admin";
-  }
-
-  return baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-};
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -65,7 +58,7 @@ const RegisterPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: RegisterFormData) => {
-      const baseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
       const response = await fetch(`${baseUrl}/register`, {
         method: "POST",
         headers: {
