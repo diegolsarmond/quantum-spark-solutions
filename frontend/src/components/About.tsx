@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Award, Lightbulb, Target } from "lucide-react";
@@ -50,11 +52,8 @@ const About = () => {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Button variant="quantum" size="lg">
-                Nossa História
-              </Button>
-              <Button variant="outline_quantum" size="lg">
-                Nosso Time
+              <Button variant="quantum" size="lg" asChild>
+                <Link to="/nossa-historia">Nossa História</Link>
               </Button>
             </div>
           </div>

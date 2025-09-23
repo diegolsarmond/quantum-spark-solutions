@@ -10,6 +10,7 @@ const config: Config = {
         tsconfig: './tsconfig.json',
       },
     ],
+
   },
   moduleNameMapper: {
     '^(\.\.?/.*)\.js$': '$1',
@@ -18,6 +19,7 @@ const config: Config = {
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/index.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'cjs', 'json', 'node'],
+
 };
 
 export default config;
