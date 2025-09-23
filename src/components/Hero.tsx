@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Bot, Code } from "lucide-react";
-import FluidBackground from "@/components/ui/FluidBackground";
+import SimpleBackground from "@/components/ui/SimpleBackground";
 
 const Hero = () => {
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
-      {/* Fluid Background Effect */}
-      <FluidBackground className="opacity-80" intensity={1.2} />
+      {/* Simple Background Effect */}
+      <SimpleBackground className="opacity-80" />
       
       {/* Additional overlay effects for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-quantum-bright/5 via-transparent to-quantum-cyan/5"></div>

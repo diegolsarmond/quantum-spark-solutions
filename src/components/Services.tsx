@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, Server, Code2, MessageSquare, Database, Shield, Cpu, Settings } from "lucide-react";
-import FluidBackground from "@/components/ui/FluidBackground";
+import SimpleBackground from "@/components/ui/SimpleBackground";
 
 const Services = () => {
   const services = [
@@ -39,8 +39,8 @@ const Services = () => {
 
   return (
     <section id="servicos" className="py-20 relative overflow-hidden">
-      {/* Fluid Background Effect */}
-      <FluidBackground className="opacity-60" intensity={0.8} />
+      {/* Simple Background Effect */}
+      <SimpleBackground className="opacity-60" />
       
       <div className="container px-4 relative z-10">
         <div className="text-center mb-16">

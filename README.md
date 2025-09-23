@@ -35,6 +35,34 @@ npm install
 npm run build
 ```
 
+4. **Preview do build (opcional)**
+```bash
+npm run preview
+```
+
+### Deploy no Easypanel
+
+1. **Conecte o repositório** ao Easypanel
+2. **Configure as variáveis de ambiente** (se necessário)
+3. **Defina o comando de build**: `npm run build`
+4. **Defina o diretório de build**: `dist`
+5. **Configure o servidor** para servir uma SPA (Single Page Application)
+
+### Configuração do Servidor
+
+Para servir corretamente a aplicação React em produção, certifique-se de que o servidor:
+- Redireciona todas as rotas para `index.html`
+- Serve os arquivos estáticos da pasta `dist`
+- Define os MIME types corretos para `.js` e `.css`
+
+O arquivo `public/.htaccess` já está configurado para servidores Apache.
+```
+
+3. **Build para produção**
+```bash
+npm run build
+```
+
 4. **Configurações do Easypanel**
 - **Build Command:** `npm run build`
 - **Output Directory:** `dist`

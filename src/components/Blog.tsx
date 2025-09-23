@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
-import FluidBackground from "@/components/ui/FluidBackground";
+import SimpleBackground from "@/components/ui/SimpleBackground";
 
 const Blog = () => {
   const blogPosts = [
@@ -49,8 +49,8 @@ const Blog = () => {
 
   return (
     <section id="blog" className="py-20 relative overflow-hidden">
-      {/* Fluid Background Effect */}
-      <FluidBackground className="opacity-90" intensity={1} />
+      {/* Simple Background Effect */}
+      <SimpleBackground className="opacity-90" />
       
       <div className="container px-4 relative z-10">
         <div className="text-center mb-16">

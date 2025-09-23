@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Crown, Building2, ArrowRight, Users, FileText, Shield, BarChart3 } from "lucide-react";
-import FluidBackground from "@/components/ui/FluidBackground";
+import SimpleBackground from "@/components/ui/SimpleBackground";
 
 const CRMAdvogados = () => {
   const plans = [
@@ -87,8 +87,8 @@ const CRMAdvogados = () => {
 
   return (
     <section id="crm-advogados" className="py-20 relative overflow-hidden">
-      {/* Fluid Background Effect */}
-      <FluidBackground className="opacity-75" intensity={1} />
+      {/* Simple Background Effect */}
+      <SimpleBackground className="opacity-75" />
       
       <div className="container px-4 relative z-10">
         {/* Header */}
