@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Bot, Code } from "lucide-react";
-import NetworkBackground from "@/components/ui/NetworkBackground";
+import FluidBackground from "@/components/ui/FluidBackground";
 
 const Hero = () => {
   return (
     <section id="inicio" className="min-h-screen flex items-center justify-center bg-gradient-hero relative overflow-hidden">
-      {/* Network Background Effect */}
-      <NetworkBackground className="opacity-70" particleCount={80} connectionDistance={180} />
+      {/* Fluid Background Effect */}
+      <FluidBackground className="opacity-80" intensity={1.2} />
       
       {/* Additional overlay effects for depth */}
-      <div className="absolute inset-0 bg-gradient-to-br from-quantum-bright/10 via-transparent to-quantum-cyan/10 animate-pulse-slow"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-quantum-bright/5 via-transparent to-quantum-cyan/5"></div>
       
       <div className="container px-4 text-center text-white relative z-10">
         <div className="max-w-4xl mx-auto">

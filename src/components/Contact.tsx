@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import NetworkBackground from "@/components/ui/NetworkBackground";
+import FluidBackground from "@/components/ui/FluidBackground";
 
 const Contact = () => {
   const contactInfo = [
@@ -35,8 +35,8 @@ const Contact = () => {
 
   return (
     <section id="contato" className="py-20 relative overflow-hidden">
-      {/* Network Background Effect */}
-      <NetworkBackground className="opacity-35" particleCount={50} connectionDistance={140} />
+      {/* Fluid Background Effect */}
+      <FluidBackground className="opacity-70" intensity={0.9} />
       
       <div className="container px-4 relative z-10">
         <div className="text-center mb-16">

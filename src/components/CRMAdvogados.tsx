@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Crown, Building2, ArrowRight, Users, FileText, Shield, BarChart3 } from "lucide-react";
+import FluidBackground from "@/components/ui/FluidBackground";
 
 const CRMAdvogados = () => {
   const plans = [
@@ -85,8 +86,11 @@ const CRMAdvogados = () => {
   ];
 
   return (
-    <section id="crm-advogados" className="py-20 bg-gradient-to-br from-background via-quantum-light/20 to-background">
-      <div className="container px-4">
+    <section id="crm-advogados" className="py-20 relative overflow-hidden">
+      {/* Fluid Background Effect */}
+      <FluidBackground className="opacity-75" intensity={1} />
+      
+      <div className="container px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-quantum text-white text-sm font-medium mb-6 animate-pulse-glow">

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Award, Lightbulb, Target } from "lucide-react";
-import NetworkBackground from "@/components/ui/NetworkBackground";
+import FluidBackground from "@/components/ui/FluidBackground";
 
 const About = () => {
   const values = [
@@ -29,8 +29,8 @@ const About = () => {
 
   return (
     <section id="sobre" className="py-20 relative overflow-hidden">
-      {/* Network Background Effect */}
-      <NetworkBackground className="opacity-30" particleCount={40} connectionDistance={120} />
+      {/* Fluid Background Effect */}
+      <FluidBackground className="opacity-50" intensity={0.6} />
       
       <div className="container px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
