@@ -24,8 +24,8 @@ const Header = () => {
           <a href="/#servicos" className="text-foreground hover:text-primary transition-smooth">
             Serviços
           </a>
-          <a href="/servicos/crm" className="text-foreground hover:text-primary transition-smooth">
-            CRM
+          <a href="/servicos/crm/advocacia" className="text-foreground hover:text-primary transition-smooth">
+            CRM para Advocacia
           </a>
           <Link to="/blog" className="text-foreground hover:text-primary transition-smooth">
             Blog
