@@ -15,6 +15,7 @@ import Desenvolvimento from "./pages/services/Desenvolvimento";
 import ServicesPage from "./pages/Services";
 import BlogPage from "./pages/Blog";
 import AdminLogin from "./pages/admin/Login";
+import AdminRegister from "./pages/admin/Register";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminLayout from "./pages/admin/AdminLayout";
 import BlogManager from "./pages/admin/BlogManager";
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/servicos/desenvolvimento" element={<Desenvolvimento />} />
 
             <Route path="/admin">
+              <Route path="register" element={<AdminRegister />} />
               <Route path="login" element={<AdminLogin />} />
               <Route
                 element={

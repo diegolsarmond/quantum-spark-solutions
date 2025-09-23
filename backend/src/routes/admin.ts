@@ -12,12 +12,43 @@ import { validateBody } from '../middleware/validate.js';
 import {
   blogPostSchema,
   loginSchema,
+  registerSchema,
   serviceSchema,
   updateBlogPostSchema,
   updateServiceSchema,
 } from '../validators/admin.js';
 
 export const adminRouter = Router();
+
+adminRouter.post(
+  '/register',
+  validateBody(registerSchema),
+  asyncHandler(async (req, res) => {
+    const { email, password, name } = req.body;
+
+    const existing = await prisma.adminUser.findUnique({ where: { email } });
+    if (existing) {
+      return res.status(409).json({ message: 'Email already registered' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const admin = await prisma.adminUser.create({
+      data: {
+        email,
+        name,
+        passwordHash,
+      },
+    });
+
+    return res.status(201).json({
+      id: admin.id,
+      email: admin.email,
+      name: admin.name,
+      createdAt: admin.createdAt,
+      updatedAt: admin.updatedAt,
+    });
+  })
+);
 
 adminRouter.post(
   '/login',

@@ -36,7 +36,7 @@ type LocationState = {
 
 const normalizeApiBaseUrl = (baseUrl: string | undefined) => {
   if (!baseUrl) {
-    return "/api";
+    return "/api/admin";
   }
 
   return baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
@@ -70,7 +70,7 @@ const LoginPage = () => {
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const baseUrl = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
-      const response = await fetch(`${baseUrl}/auth/login`, {
+      const response = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -165,6 +165,13 @@ const LoginPage = () => {
           </Form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
+            <span className="mr-1">Ainda não tem acesso?</span>
+            <Link className="text-primary underline-offset-2 hover:underline" to="/admin/register">
+              Solicite um cadastro
+            </Link>
+          </p>
+
+          <p className="mt-3 text-center text-sm text-muted-foreground">
             <span className="mr-1">Precisa de ajuda?</span>
             <Link className="text-primary underline-offset-2 hover:underline" to="/#contato">
               Fale com o suporte
