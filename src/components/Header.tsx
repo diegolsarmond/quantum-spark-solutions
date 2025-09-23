@@ -21,9 +21,9 @@ const Header = () => {
           <a href="/" className="text-foreground hover:text-primary transition-smooth">
             Início
           </a>
-          <a href="/#servicos" className="text-foreground hover:text-primary transition-smooth">
+          <Link to="/servicos" className="text-foreground hover:text-primary transition-smooth">
             Serviços
-          </a>
+          </Link>
           <a href="/servicos/crm" className="text-foreground hover:text-primary transition-smooth">
             CRM
           </a>
