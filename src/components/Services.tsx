@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, Server, Code2, MessageSquare, Database, Shield, Cpu, Settings } from "lucide-react";
+import NetworkBackground from "@/components/ui/NetworkBackground";
 
 const Services = () => {
   const services = [
@@ -37,8 +38,11 @@ const Services = () => {
   ];
 
   return (
-    <section id="servicos" className="py-20 bg-background">
-      <div className="container px-4">
+    <section id="servicos" className="py-20 relative overflow-hidden">
+      {/* Network Background Effect */}
+      <NetworkBackground className="opacity-40" particleCount={45} connectionDistance={130} />
+      
+      <div className="container px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-quantum bg-clip-text text-transparent">
             Nossos Serviços

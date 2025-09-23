@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import NetworkBackground from "@/components/ui/NetworkBackground";
 
 const Contact = () => {
   const contactInfo = [
@@ -33,8 +34,11 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contato" className="py-20 bg-gradient-to-br from-quantum-light/30 to-background">
-      <div className="container px-4">
+    <section id="contato" className="py-20 relative overflow-hidden">
+      {/* Network Background Effect */}
+      <NetworkBackground className="opacity-35" particleCount={50} connectionDistance={140} />
+      
+      <div className="container px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-quantum bg-clip-text text-transparent">
             Entre em Contato
