@@ -1,11 +1,39 @@
+import { useEffect } from "react";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import SimpleBackground from "@/components/ui/SimpleBackground";
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "typebot-standard": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
+
 const Contact = () => {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const existingScript = document.getElementById("typebot-init");
+    if (existingScript) return;
+
+    const typebotInitScript = document.createElement("script");
+    typebotInitScript.id = "typebot-init";
+    typebotInitScript.type = "module";
+    typebotInitScript.innerHTML = `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
+  
+Typebot.initStandard({
+  typebot: "quantumbot",
+  apiHost: "https://form.quantumtecnologia.com.br",
+});
+`;
+    document.body.append(typebotInitScript);
+  }, []);
+
   const contactInfo = [
     {
       icon: Mail,
@@ -59,65 +87,8 @@ const Contact = () => {
                 Preencha o formulário e entraremos em contato em até 2 horas úteis
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Nome
-                  </label>
-                  <Input placeholder="Seu nome completo" className="border-quantum-light/30" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Email
-                  </label>
-                  <Input type="email" placeholder="seu@email.com" className="border-quantum-light/30" />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Telefone
-                  </label>
-                  <Input placeholder="(11) 99999-9999" className="border-quantum-light/30" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Empresa
-                  </label>
-                  <Input placeholder="Nome da sua empresa" className="border-quantum-light/30" />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
-                  Serviço de Interesse
-                </label>
-                <select className="w-full p-3 rounded-md border border-quantum-light/30 bg-background text-foreground">
-                  <option>Selecione um serviço</option>
-                  <option>Assistente Virtual com IA</option>
-                  <option>Automações Empresariais</option>
-                  <option>Desenvolvimento Sob Medida</option>
-                  <option>CRM para Advogados</option>
-                  <option>Consultoria em TI</option>
-                  <option>Infraestrutura e Servidores</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-foreground mb-2 block">
-                  Mensagem
-                </label>
-                <Textarea 
-                  placeholder="Conte-nos mais sobre seu projeto e suas necessidades..." 
-                  className="min-h-[120px] border-quantum-light/30"
-                />
-              </div>
-
-              <Button variant="quantum" size="lg" className="w-full">
-                Enviar Solicitação
-              </Button>
+            <CardContent>
+              <typebot-standard style={{ width: "100%", height: "600px" }}></typebot-standard>
             </CardContent>
           </Card>
 
