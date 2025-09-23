@@ -41,12 +41,16 @@ const App = () => (
 
             <Route path="/admin">
               <Route path="login" element={<AdminLogin />} />
-              <Route element={<RequireAuth permissions={["admin:access"]} />}>
-                <Route element={<AdminLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="blog" element={<BlogManager />} />
-                  <Route path="servicos" element={<ServiceManager />} />
-                </Route>
+              <Route
+                element={
+                  <RequireAuth permissions={["admin:access"]}>
+                    <AdminLayout />
+                  </RequireAuth>
+                }
+              >
+                <Route index element={<AdminDashboard />} />
+                <Route path="blog" element={<BlogManager />} />
+                <Route path="servicos" element={<ServiceManager />} />
               </Route>
             </Route>
 

@@ -89,6 +89,7 @@ const prismaMock = {
       const index = sessions.findIndex((session) => session.id === where.id);
       if (index === -1) {
         throw createPrismaError('P2025', 'Session not found');
+
       }
       const [removed] = sessions.splice(index, 1);
       return { ...removed, createdAt: new Date() };
@@ -126,6 +127,7 @@ const prismaMock = {
         return record;
       }
     ),
+
     findUnique: jest.fn(async ({ where }: { where: { id?: string; slug?: string } }) => {
       if (where.id) {
         return posts.find((post) => post.id === where.id) ?? null;
@@ -139,6 +141,7 @@ const prismaMock = {
       const post = posts.find((item) => item.id === where.id);
       if (!post) {
         throw createPrismaError('P2025', 'Post not found');
+
       }
       Object.assign(post, data, { updatedAt: new Date() });
       return post;
@@ -147,6 +150,7 @@ const prismaMock = {
       const index = posts.findIndex((post) => post.id === where.id);
       if (index === -1) {
         throw createPrismaError('P2025', 'Post not found');
+
       }
       const [removed] = posts.splice(index, 1);
       return removed;
@@ -160,6 +164,7 @@ const prismaMock = {
         id: data.id ?? `service-${services.length + 1}`,
         name: data.name!,
         description: data.description!,
+
         isActive: data.isActive ?? true,
         createdAt: now,
         updatedAt: now,
@@ -171,6 +176,7 @@ const prismaMock = {
       const service = services.find((item) => item.id === where.id);
       if (!service) {
         throw createPrismaError('P2025', 'Service not found');
+
       }
       Object.assign(service, data, { updatedAt: new Date() });
       return service;
@@ -179,6 +185,7 @@ const prismaMock = {
       const index = services.findIndex((service) => service.id === where.id);
       if (index === -1) {
         throw createPrismaError('P2025', 'Service not found');
+
       }
       const [removed] = services.splice(index, 1);
       return removed;
@@ -244,6 +251,7 @@ describe('Admin routes', () => {
 
     const postId = listResponse.body[0].id as string;
 
+
     const deleteResponse = await request(app)
       .delete(`/api/admin/posts/${postId}`)
       .set('Authorization', `Bearer ${token}`);
@@ -268,6 +276,7 @@ describe('Admin routes', () => {
     expect(duplicateResponse.status).toBe(409);
     expect(duplicateResponse.body.message).toContain('Unique constraint failed');
   });
+
 
   it('updates services data', async () => {
     const token = await authenticate();
@@ -301,6 +310,7 @@ describe('Admin routes', () => {
     expect(updateResponse.status).toBe(404);
     expect(updateResponse.body.message).toBe('Record not found');
   });
+
 
   it('revokes a session on logout', async () => {
     const token = await authenticate();

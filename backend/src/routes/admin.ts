@@ -128,6 +128,7 @@ adminRouter.put(
       data: req.body,
     });
     return res.json(post);
+
   })
 );
 
@@ -136,6 +137,7 @@ adminRouter.delete(
   asyncHandler(async (req, res) => {
     await prisma.blogPost.delete({ where: { id: req.params.id } });
     return res.status(204).send();
+
   })
 );
 
@@ -173,6 +175,7 @@ adminRouter.put(
       data: req.body,
     });
     return res.json(service);
+
   })
 );
 
@@ -181,5 +184,6 @@ adminRouter.delete(
   asyncHandler(async (req, res) => {
     await prisma.service.delete({ where: { id: req.params.id } });
     return res.status(204).send();
+
   })
 );
