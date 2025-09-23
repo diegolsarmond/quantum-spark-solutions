@@ -10,7 +10,18 @@ const adminUser = {
   email: 'admin@example.com',
   passwordHash,
   name: 'Admin User',
+  createdAt: new Date('2024-01-01T00:00:00.000Z'),
+  updatedAt: new Date('2024-01-01T00:00:00.000Z'),
 };
+
+interface AdminRecord {
+  id: string;
+  email: string;
+  passwordHash: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 type PrismaMockError = Error & {
   code: 'P2002' | 'P2025';
@@ -61,17 +72,38 @@ interface ServiceRecord {
 let sessions: SessionRecord[] = [];
 let posts: BlogPostRecord[] = [];
 let services: ServiceRecord[] = [];
+let adminUsers: AdminRecord[] = [];
 
 const prismaMock = {
   adminUser: {
     findUnique: jest.fn(async ({ where }: { where: { email?: string; id?: string } }) => {
-      if (where.email && where.email === adminUser.email) {
-        return adminUser;
+      if (where.email) {
+        return adminUsers.find((user) => user.email === where.email) ?? null;
       }
-      if (where.id && where.id === adminUser.id) {
-        return adminUser;
+      if (where.id) {
+        return adminUsers.find((user) => user.id === where.id) ?? null;
       }
       return null;
+    }),
+    create: jest.fn(async ({ data }: { data: Omit<AdminRecord, 'createdAt' | 'updatedAt' | 'id'> & Partial<AdminRecord> }) => {
+      if (adminUsers.some((user) => user.email === data.email)) {
+        throw createPrismaError('P2002', 'Unique constraint failed on the fields: (`email`)', {
+          target: ['email'],
+        });
+      }
+
+      const now = new Date();
+      const record: AdminRecord = {
+        id: data.id ?? `admin-${adminUsers.length + 1}`,
+        email: data.email!,
+        passwordHash: data.passwordHash!,
+        name: data.name!,
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      adminUsers.push(record);
+      return record;
     }),
   },
   sessionToken: {
@@ -99,7 +131,8 @@ const prismaMock = {
       if (!session) {
         return null;
       }
-      return { ...session, createdAt: new Date(), admin: adminUser };
+      const admin = adminUsers.find((user) => user.id === session.adminId) ?? adminUsers[0];
+      return { ...session, createdAt: new Date(), admin };
     }),
   },
   blogPost: {
@@ -204,13 +237,14 @@ describe('Admin routes', () => {
     sessions = [];
     posts = [];
     services = [];
+    adminUsers = [{ ...adminUser }];
     jest.clearAllMocks();
   });
 
   const authenticate = async () => {
     const response = await request(app)
       .post('/api/admin/login')
-      .send({ email: adminUser.email, password });
+      .send({ email: adminUsers[0]!.email, password });
 
     expect(response.status).toBe(200);
     const { token } = response.body as { token: string };
@@ -220,11 +254,48 @@ describe('Admin routes', () => {
   it('authenticates an admin user and returns a token', async () => {
     const response = await request(app)
       .post('/api/admin/login')
-      .send({ email: adminUser.email, password });
+      .send({ email: adminUsers[0]!.email, password });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('token');
     expect(sessions).toHaveLength(1);
+  });
+
+  it('registers a new admin user', async () => {
+    const response = await request(app).post('/api/admin/register').send({
+      email: 'new-admin@example.com',
+      password: 'An0therStrongPass!',
+      name: 'New Admin',
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toMatchObject({
+      email: 'new-admin@example.com',
+      name: 'New Admin',
+    });
+
+    const created = adminUsers.find((user) => user.email === 'new-admin@example.com');
+    expect(created).toBeDefined();
+    await expect(bcrypt.compare('An0therStrongPass!', created!.passwordHash)).resolves.toBe(true);
+  });
+
+  it('rejects duplicated admin registrations', async () => {
+    const firstResponse = await request(app).post('/api/admin/register').send({
+      email: 'duplicate@example.com',
+      password: 'Duplicat3Pass!',
+      name: 'First Admin',
+    });
+
+    expect(firstResponse.status).toBe(201);
+
+    const duplicateResponse = await request(app).post('/api/admin/register').send({
+      email: 'duplicate@example.com',
+      password: 'Duplicat3Pass!',
+      name: 'Second Admin',
+    });
+
+    expect(duplicateResponse.status).toBe(409);
+    expect(duplicateResponse.body.message).toBe('Email already registered');
   });
 
   it('creates, lists and deletes blog posts', async () => {
