@@ -287,7 +287,7 @@ const CRM = () => {
                 ))}
               </div>
               <div className="flex flex-wrap gap-4">
-                <Button variant="quantum" size="lg" className="track-link" onClick={() => handleDemoClick("legal_section")}> 
+                <Button variant="quantum" size="lg" className="track-link" onClick={() => handleDemoClick("legal_section")}>
                   Solicitar Demonstração
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
@@ -298,6 +298,9 @@ const CRM = () => {
                   onClick={() => handleWhatsappClick("legal_section")}
                 >
                   Falar no WhatsApp
+                </Button>
+                <Button variant="outline_quantum" size="lg" className="track-link" asChild>
+                  <a href="/servicos/crm/advocacia">Conheça o CRM para Advocacia</a>
                 </Button>
               </div>
             </div>

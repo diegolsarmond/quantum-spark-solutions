@@ -107,7 +107,7 @@ const Services = () => {
                     } else if (service.title === 'Automações Empresariais') {
                       servicePath = '/servicos/automacoes';
                     } else if (service.title === 'CRM para Advogados') {
-                      servicePath = '/servicos/crm';
+                      servicePath = '/servicos/crm/advocacia';
                     } else if (service.title === 'Desenvolvimento Sob Medida') {
                       servicePath = '/servicos/desenvolvimento';
                     } else {
