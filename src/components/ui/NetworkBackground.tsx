@@ -12,7 +12,7 @@ const NetworkBackground = ({
   connectionDistance = 120 
 }: NetworkBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const particlesRef = useRef<Array<{
     x: number;
     y: number;
@@ -22,19 +22,25 @@ const NetworkBackground = ({
   }>>([]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    let isAnimating = true;
+
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      if (!canvas || !ctx) return;
+      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
     };
 
     const initParticles = () => {
+      if (!canvas) return;
       particlesRef.current = [];
       for (let i = 0; i < particleCount; i++) {
         particlesRef.current.push({
@@ -48,23 +54,34 @@ const NetworkBackground = ({
     };
 
     const drawParticle = (particle: any) => {
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${Math.random() * 60 + 200}, 70%, 60%, 0.6)`;
-      ctx.fill();
+      if (!ctx) return;
+      try {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${Math.random() * 60 + 200}, 70%, 60%, 0.6)`;
+        ctx.fill();
+      } catch (error) {
+        console.warn('Canvas drawing error:', error);
+      }
     };
 
     const drawConnection = (p1: any, p2: any, distance: number) => {
-      const opacity = Math.max(0, 1 - distance / connectionDistance);
-      ctx.beginPath();
-      ctx.moveTo(p1.x, p1.y);
-      ctx.lineTo(p2.x, p2.y);
-      ctx.strokeStyle = `hsla(${180 + Math.sin(Date.now() * 0.001) * 40}, 70%, 50%, ${opacity * 0.3})`;
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
+      if (!ctx) return;
+      try {
+        const opacity = Math.max(0, 1 - distance / connectionDistance);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `hsla(${180 + Math.sin(Date.now() * 0.001) * 40}, 70%, 50%, ${opacity * 0.3})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      } catch (error) {
+        console.warn('Canvas connection drawing error:', error);
+      }
     };
 
     const updateParticles = () => {
+      if (!canvas) return;
       particlesRef.current.forEach(particle => {
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -78,43 +95,60 @@ const NetworkBackground = ({
     };
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      if (!isAnimating || !ctx || !canvas) return;
       
-      updateParticles();
+      try {
+        ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+        
+        updateParticles();
 
-      // Draw connections
-      for (let i = 0; i < particlesRef.current.length; i++) {
-        for (let j = i + 1; j < particlesRef.current.length; j++) {
-          const p1 = particlesRef.current[i];
-          const p2 = particlesRef.current[j];
-          const distance = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
-          
-          if (distance < connectionDistance) {
-            drawConnection(p1, p2, distance);
+        // Draw connections
+        for (let i = 0; i < particlesRef.current.length; i++) {
+          for (let j = i + 1; j < particlesRef.current.length; j++) {
+            const p1 = particlesRef.current[i];
+            const p2 = particlesRef.current[j];
+            const distance = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+            
+            if (distance < connectionDistance) {
+              drawConnection(p1, p2, distance);
+            }
           }
         }
+
+        // Draw particles
+        particlesRef.current.forEach(drawParticle);
+
+        if (isAnimating) {
+          animationRef.current = requestAnimationFrame(animate);
+        }
+      } catch (error) {
+        console.warn('Animation error:', error);
+        isAnimating = false;
       }
-
-      // Draw particles
-      particlesRef.current.forEach(drawParticle);
-
-      animationRef.current = requestAnimationFrame(animate);
     };
 
-    resizeCanvas();
-    initParticles();
-    animate();
-
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       resizeCanvas();
       initParticles();
-    });
+    };
+
+    try {
+      resizeCanvas();
+      initParticles();
+      animate();
+
+      window.addEventListener('resize', handleResize);
+    } catch (error) {
+      console.warn('NetworkBackground initialization error:', error);
+    }
 
     return () => {
+      isAnimating = false;
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleResize);
     };
   }, [particleCount, connectionDistance]);
 
