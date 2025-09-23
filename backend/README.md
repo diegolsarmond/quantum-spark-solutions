@@ -21,6 +21,7 @@ API administrativa construída com **Node.js**, **Express**, **Prisma ORM** e **
    ```env
    DATABASE_URL=postgres://postgres:C@104rm0nd1994@base-de-dados_postgres:5432/QuantumTecnologia?sslmode=disable
    JWT_SECRET=uma-chave-super-secreta
+   CORS_ALLOWED_ORIGINS=http://localhost:3000,https://quantumtecnologia.com.br
    ```
 
    > As migrações criam e utilizam o schema `site_quantum` dentro do banco `QuantumTecnologia`.
