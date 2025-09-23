@@ -13,6 +13,9 @@
   RewriteRule . /index.html [L]
 </IfModule>
 
+# Fallback for environments without mod_rewrite
+ErrorDocument 404 /index.html
+
 # MIME Types
 AddType application/javascript .js
 AddType text/css .css
