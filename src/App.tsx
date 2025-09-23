@@ -10,6 +10,7 @@ import Automacoes from "./pages/services/Automacoes";
 import CRM from "./pages/services/CRM";
 import CRMAdvocacia from "./pages/services/CRMAdvocacia";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
+import ServicesPage from "./pages/Services";
 import BlogPage from "./pages/Blog";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/servicos" element={<ServicesPage />} />
           <Route path="/servicos/assistente-ia" element={<AssistenteIA />} />
           <Route path="/servicos/automacoes" element={<Automacoes />} />
           <Route path="/servicos/crm" element={<CRM />} />
