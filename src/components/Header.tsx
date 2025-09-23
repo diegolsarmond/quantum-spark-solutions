@@ -20,7 +20,7 @@ const Header = () => {
             Serviços
           </a>
           <a href="#crm-advogados" className="text-foreground hover:text-primary transition-smooth">
-            CRM Advogados
+            CRM
           </a>
           <a href="#sobre" className="text-foreground hover:text-primary transition-smooth">
             Sobre

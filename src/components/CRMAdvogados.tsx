@@ -183,7 +183,7 @@ const CRMAdvogados = () => {
                     document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
-                  {plan.highlight ? 'Começar Agora' : 'Solicitar Demonstração'}
+                  Teste Grátis por 14 dias
                   <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </CardContent>
@@ -229,10 +229,10 @@ const CRMAdvogados = () => {
                         'source': 'crm_section'
                       });
                     }
-                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de agendar uma demonstração do CRM para advogados.', '_blank');
+                    window.open('https://wa.me/5531993054200?text=Olá! Gostaria de iniciar o teste grátis de 14 dias do CRM para advogados.', '_blank');
                   }}
                 >
-                  Demonstração Gratuita
+                  Teste Grátis por 14 dias
                 </Button>
               </div>
             </CardContent>

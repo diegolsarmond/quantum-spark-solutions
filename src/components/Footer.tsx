@@ -44,7 +44,7 @@ const Footer = () => {
 
           {/* CRM Plans */}
           <div>
-            <h3 className="font-semibold mb-4 text-quantum-cyan">CRM Advogados</h3>
+            <h3 className="font-semibold mb-4 text-quantum-cyan">CRM</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li><a href="#crm-advogados" className="hover:text-white transition-colors">Plano Starter</a></li>
               <li><a href="#crm-advogados" className="hover:text-white transition-colors">Plano Professional</a></li>

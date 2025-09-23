@@ -1,73 +1,86 @@
-# Welcome to your Lovable project
+# Quantum Tecnologia - Website
 
-## Project info
+Site institucional da Quantum Tecnologia - empresa especializada em soluções de IA, automações empresariais e CRM para advogados.
 
-**URL**: https://lovable.dev/projects/77e389d4-3ea6-4ede-9806-ca349ec98d05
+## 🚀 Tecnologias
 
-## How can I edit this code?
+- **React 18** - Biblioteca JavaScript para interfaces
+- **TypeScript** - Tipagem estática para JavaScript
+- **Tailwind CSS** - Framework de CSS utilitário
+- **Vite** - Build tool moderna e rápida
+- **Shadcn/ui** - Componentes UI reutilizáveis
+- **Lucide React** - Ícones modernos
 
-There are several ways of editing your application.
+## 📦 Deploy - Easypanel
 
-**Use Lovable**
+### Pré-requisitos
+- Node.js 18+ 
+- Npm ou Yarn
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/77e389d4-3ea6-4ede-9806-ca349ec98d05) and start prompting.
+### Configuração para Produção
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. **Clone o repositório**
+```bash
+git clone <repository-url>
+cd quantum-tecnologia
 ```
 
-**Edit a file directly in GitHub**
+2. **Instale as dependências**
+```bash
+npm install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. **Build para produção**
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+4. **Configurações do Easypanel**
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Node Version:** 18+
+- **Install Command:** `npm install`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Variáveis de Ambiente (Opcional)
 
-## What technologies are used for this project?
+Crie um arquivo `.env` para configurações específicas:
 
-This project is built with:
+```env
+VITE_GOOGLE_ANALYTICS_ID=your-ga-id-here
+VITE_CONTACT_EMAIL=contato@quantumtecnologia.com.br
+VITE_CONTACT_PHONE=5531993054200
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Configurações Adicionais
 
-## How can I deploy this project?
+1. **Google Analytics**: Descomente e configure o ID no `index.html`
+2. **Domínio**: Configure seu domínio personalizado no Easypanel
+3. **SSL**: Ative o certificado SSL automático
+4. **CDN**: Configure cache para assets estáticos
 
-Simply open [Lovable](https://lovable.dev/projects/77e389d4-3ea6-4ede-9806-ca349ec98d05) and click on Share -> Publish.
+### Scripts Disponíveis
 
-## Can I connect a custom domain to my Lovable project?
+- `npm run dev` - Servidor de desenvolvimento
+- `npm run build` - Build para produção
+- `npm run preview` - Preview do build de produção
+- `npm run lint` - Verificação de código
 
-Yes, you can!
+### SEO e Performance
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+✅ Meta tags configuradas
+✅ Open Graph tags
+✅ Sitemap (robots.txt)
+✅ Lazy loading de imagens
+✅ Compressão de assets
+✅ Fontes otimizadas (Google Fonts)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Contato
+
+**Quantum Tecnologia**
+- 📧 contato@quantumtecnologia.com.br
+- 📱 (31) 99305-4200
+- 📍 R. Antônio de Albuquerque, 330 - Sala 901, Savassi - Belo Horizonte, MG
+
+---
+
+Desenvolvido com ❤️ pela equipe Quantum Tecnologia
