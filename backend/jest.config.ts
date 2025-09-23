@@ -1,14 +1,23 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
+  transform: {
+    '^.+\\.(t|j)sx?$': [
+      'ts-jest',
+      {
+        useESM: true,
+        tsconfig: './tsconfig.json',
+      },
+    ],
+  },
   moduleNameMapper: {
     '^(\.\.?/.*)\.js$': '$1',
   },
-  extensionsToTreatAsEsm: ['.ts'],
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/index.ts'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'cjs', 'json', 'node'],
 };
 
 export default config;
