@@ -47,8 +47,47 @@ const Blog = () => {
   ];
 
   return (
-    <section id="blog" className="py-20 bg-gradient-to-br from-quantum-light/20 to-background">
-      <div className="container px-4">
+    <section id="blog" className="py-20 relative overflow-hidden">
+      {/* Advanced Background Effects */}
+      <div className="absolute inset-0">
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-quantum-light/30 via-background to-quantum-cyan/10"></div>
+        
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-quantum-bright/10 via-transparent to-quantum-cyan/10 animate-pulse-slow"></div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute top-20 left-1/6 w-32 h-32 bg-quantum-cyan/15 rounded-full blur-2xl animate-float opacity-60"></div>
+        <div className="absolute top-1/3 right-1/5 w-48 h-48 bg-quantum-bright/10 rounded-full blur-3xl animate-float opacity-70" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-quantum-cyan/12 rounded-full blur-2xl animate-float opacity-50" style={{animationDelay: '3s'}}></div>
+        <div className="absolute top-2/3 right-1/4 w-24 h-24 bg-quantum-bright/15 rounded-full blur-xl animate-float opacity-80" style={{animationDelay: '4.5s'}}></div>
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-3" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--quantum-cyan)) 0.5px, transparent 0)`,
+          backgroundSize: '60px 60px'
+        }}></div>
+        
+        {/* Animated light rays */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-quantum-bright/20 to-transparent animate-pulse-glow opacity-40"></div>
+          <div className="absolute top-3/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-quantum-cyan/20 to-transparent animate-pulse-glow opacity-30" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        {/* Floating particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/5 left-1/5 w-1.5 h-1.5 bg-quantum-cyan/60 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-1/2 right-1/5 w-1 h-1 bg-quantum-bright/70 rounded-full animate-ping" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-1/3 left-2/3 w-2 h-2 bg-quantum-cyan/50 rounded-full animate-ping" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/6 right-1/3 w-1 h-1 bg-quantum-bright/60 rounded-full animate-ping" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute bottom-1/5 right-1/6 w-1.5 h-1.5 bg-quantum-cyan/40 rounded-full animate-ping" style={{animationDelay: '3.5s'}}></div>
+        </div>
+        
+        {/* Moving gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-quantum-bright/5 to-transparent animate-pulse-glow opacity-60" style={{animationDelay: '2s'}}></div>
+      </div>
+      
+      <div className="container px-4 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-quantum bg-clip-text text-transparent">
             Blog & Insights
