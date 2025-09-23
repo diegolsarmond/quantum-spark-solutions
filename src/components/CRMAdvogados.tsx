@@ -108,8 +108,7 @@ const CRMAdvogados = () => {
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className="text-center bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2 animate-float"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="text-center bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2"
             >
               <CardContent className="p-6">
                 <div className="p-4 rounded-full bg-gradient-quantum w-fit mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
