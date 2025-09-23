@@ -15,14 +15,14 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Telefone",
-      info: "(11) 99999-9999",
+      info: "(31) 99305-4200",
       description: "Segunda a sexta, 8h às 18h"
     },
     {
       icon: MapPin,
       title: "Endereço",
-      info: "São Paulo, SP",
-      description: "Atendimento presencial com agendamento"
+      info: "R. Antônio de Albuquerque, 330 - Sala 901, Savassi",
+      description: "Belo Horizonte - MG, 30112-010"
     },
     {
       icon: Clock,
@@ -157,10 +157,28 @@ const Contact = () => {
                   Nossa equipe está pronta para atender suas necessidades urgentes
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep">
+                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).gtag) {
+                        (window as any).gtag('event', 'whatsapp_click', {
+                          'source': 'contact_section'
+                        });
+                      }
+                      window.open('https://wa.me/5531993054200?text=Olá! Gostaria de saber mais sobre os serviços da Quantum Tecnologia.', '_blank');
+                    }}
+                  >
                     WhatsApp
                   </Button>
-                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep">
+                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).gtag) {
+                        (window as any).gtag('event', 'phone_click', {
+                          'source': 'contact_section'
+                        });
+                      }
+                      window.open('tel:5531993054200', '_self');
+                    }}
+                  >
                     Ligar Agora
                   </Button>
                 </div>

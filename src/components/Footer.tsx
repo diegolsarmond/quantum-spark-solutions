@@ -59,15 +59,21 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-white/80">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>contato@quantumtecnologia.com.br</span>
+                <a href="mailto:contato@quantumtecnologia.com.br" className="hover:text-quantum-cyan transition-colors">
+                  contato@quantumtecnologia.com.br
+                </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>(11) 99999-9999</span>
+                <a href="tel:5531993054200" className="hover:text-quantum-cyan transition-colors">
+                  (31) 99305-4200
+                </a>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
-                <span>São Paulo, SP</span>
+                <span>R. Antônio de Albuquerque, 330 - Sala 901<br />
+                Savassi Canopus Corporate<br />
+                Belo Horizonte - MG, 30112-010</span>
               </div>
             </div>
           </div>

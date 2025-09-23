@@ -24,21 +24,15 @@ const Services = () => {
     },
     {
       icon: Database,
-      title: "CRM Personalizado",
-      description: "Sistemas de gestão de relacionamento com cliente adaptados ao seu modelo de negócio.",
-      features: ["Gestão de Leads", "Funil de Vendas", "Relatórios Avançados", "Integrações ERP"]
+      title: "Consultoria em TI",
+      description: "Orientação estratégica em tecnologia para impulsionar o crescimento e inovação da sua empresa.",
+      features: ["Análise Tecnológica", "Planejamento Estratégico", "Auditoria de Sistemas", "Melhores Práticas"]
     },
     {
       icon: Server,
       title: "Infraestrutura e Servidores",
       description: "Alocação e gerenciamento de servidores, cloud computing e infraestrutura de TI completa.",
       features: ["Cloud Computing", "Backup Automático", "Monitoramento 24/7", "Escalabilidade"]
-    },
-    {
-      icon: Shield,
-      title: "Consultoria em TI",
-      description: "Orientação estratégica em tecnologia para impulsionar o crescimento e inovação da sua empresa.",
-      features: ["Análise Tecnológica", "Planejamento Estratégico", "Auditoria de Sistemas", "Melhores Práticas"]
     }
   ];
 
@@ -80,7 +74,19 @@ const Services = () => {
                     </li>
                   ))}
                 </ul>
-                <Button variant="outline_quantum" className="w-full">
+                <Button 
+                  variant="outline_quantum" 
+                  className="w-full track-link"
+                  onClick={() => {
+                    // Analytics tracking
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'service_click', {
+                        'service_name': service.title
+                      });
+                    }
+                    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Saiba Mais
                 </Button>
               </CardContent>
@@ -89,7 +95,19 @@ const Services = () => {
         </div>
 
         <div className="text-center mt-16">
-          <Button variant="quantum" size="xl">
+          <Button 
+            variant="quantum" 
+            size="xl"
+            className="track-link"
+            onClick={() => {
+              if (typeof window !== 'undefined' && (window as any).gtag) {
+                (window as any).gtag('event', 'contact_team_click', {
+                  'source': 'services_section'
+                });
+              }
+              document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             Fale com Nossa Equipe
           </Button>
         </div>

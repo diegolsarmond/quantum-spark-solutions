@@ -30,7 +30,19 @@ const Header = () => {
           </a>
         </nav>
 
-        <Button variant="quantum" size="lg">
+        <Button 
+          variant="quantum" 
+          size="lg"
+          className="track-link"
+          onClick={() => {
+            if (typeof window !== 'undefined' && (window as any).gtag) {
+              (window as any).gtag('event', 'header_contact_click', {
+                'source': 'header'
+              });
+            }
+            document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
           Fale Conosco
         </Button>
       </div>
