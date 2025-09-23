@@ -26,6 +26,7 @@ const Header = () => {
           </Link>
           <a href="/servicos/crm" className="text-foreground hover:text-primary transition-smooth">
             CRM
+
           </a>
           <Link to="/blog" className="text-foreground hover:text-primary transition-smooth">
             Blog

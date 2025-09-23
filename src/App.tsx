@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import AssistenteIA from "./pages/services/AssistenteIA";
 import Automacoes from "./pages/services/Automacoes";
 import CRM from "./pages/services/CRM";
+import CRMAdvocacia from "./pages/services/CRMAdvocacia";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
 import ServicesPage from "./pages/Services";
 import BlogPage from "./pages/Blog";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/servicos/assistente-ia" element={<AssistenteIA />} />
           <Route path="/servicos/automacoes" element={<Automacoes />} />
           <Route path="/servicos/crm" element={<CRM />} />
+          <Route path="/servicos/crm/advocacia" element={<CRMAdvocacia />} />
           <Route path="/servicos/desenvolvimento" element={<Desenvolvimento />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
