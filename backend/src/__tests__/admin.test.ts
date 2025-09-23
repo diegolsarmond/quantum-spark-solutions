@@ -394,4 +394,12 @@ describe('Admin routes', () => {
     expect(logoutResponse.status).toBe(200);
     expect(sessions.find((session) => session.id === sessionId)).toBeUndefined();
   });
+
+  it('returns a JSON 404 response for unknown routes', async () => {
+    const response = await request(app).get('/api/non-existent');
+
+    expect(response.status).toBe(404);
+    expect(response.headers['content-type']).toMatch(/application\/json/);
+    expect(response.body).toEqual({ message: 'Route not found' });
+  });
 });
