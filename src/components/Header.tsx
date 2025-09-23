@@ -37,6 +37,9 @@ const Header = () => {
           <a href="/#contato" className="text-foreground hover:text-primary transition-smooth">
             Contato
           </a>
+          <Link to="/admin" className="sr-only focus:not-sr-only">
+            Painel
+          </Link>
         </nav>
 
         <Button
