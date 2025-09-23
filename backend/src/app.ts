@@ -28,6 +28,22 @@ export const createApp = () => {
   app.options('*', corsMiddleware);
   app.use(express.json());
 
+  app.use((req, _res, next) => {
+    if (!req.url) {
+      return next();
+    }
+
+    const [path, ...queryParts] = req.url.split('?');
+    const trimmedPath = path.replace(/(?:%20|\s)+$/giu, '');
+
+    if (trimmedPath !== path) {
+      const query = queryParts.length ? `?${queryParts.join('?')}` : '';
+      req.url = `${trimmedPath}${query}`;
+    }
+
+    next();
+  });
+
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
