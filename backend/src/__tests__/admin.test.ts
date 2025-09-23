@@ -279,6 +279,22 @@ describe('Admin routes', () => {
     await expect(bcrypt.compare('An0therStrongPass!', created!.passwordHash)).resolves.toBe(true);
   });
 
+  it('normalizes admin routes with trailing whitespace in the URL', async () => {
+    const response = await request(app).post('/api/admin/register%20').send({
+      email: 'encoded-space@example.com',
+      password: 'Encod3dSp@ce!',
+      name: 'Encoded Space',
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toMatchObject({
+      email: 'encoded-space@example.com',
+      name: 'Encoded Space',
+    });
+
+    expect(adminUsers.some((user) => user.email === 'encoded-space@example.com')).toBe(true);
+  });
+
   it('rejects duplicated admin registrations', async () => {
     const firstResponse = await request(app).post('/api/admin/register').send({
       email: 'duplicate@example.com',
