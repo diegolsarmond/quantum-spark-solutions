@@ -33,12 +33,12 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-quantum-cyan">Serviços</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><a href="#servicos" className="hover:text-white transition-colors">Assistentes Virtuais com IA</a></li>
-              <li><a href="#servicos" className="hover:text-white transition-colors">Automações Empresariais</a></li>
-              <li><a href="#servicos" className="hover:text-white transition-colors">Desenvolvimento Sob Medida</a></li>
-              <li><a href="#crm-advogados" className="hover:text-white transition-colors">CRM para Advogados</a></li>
-              <li><a href="#servicos" className="hover:text-white transition-colors">Consultoria em TI</a></li>
-              <li><a href="#servicos" className="hover:text-white transition-colors">Infraestrutura e Servidores</a></li>
+              <li><a href="/#servicos" className="hover:text-white transition-colors">Assistentes Virtuais com IA</a></li>
+              <li><a href="/servicos/assistente-ia" className="hover:text-white transition-colors">→ Assistente IA</a></li>
+              <li><a href="/servicos/automacoes" className="hover:text-white transition-colors">→ Automações</a></li>
+              <li><a href="/servicos/desenvolvimento" className="hover:text-white transition-colors">→ Desenvolvimento</a></li>
+              <li><a href="/#servicos" className="hover:text-white transition-colors">Consultoria em TI</a></li>
+              <li><a href="/#servicos" className="hover:text-white transition-colors">Infraestrutura e Servidores</a></li>
             </ul>
           </div>
 
@@ -46,10 +46,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-quantum-cyan">CRM</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><a href="#crm-advogados" className="hover:text-white transition-colors">Plano Starter</a></li>
-              <li><a href="#crm-advogados" className="hover:text-white transition-colors">Plano Professional</a></li>
-              <li><a href="#crm-advogados" className="hover:text-white transition-colors">Plano Enterprise</a></li>
-              <li><a href="#crm-advogados" className="hover:text-white transition-colors">Soluções Personalizadas</a></li>
+              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Starter</a></li>
+              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Professional</a></li>
+              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Plano Enterprise</a></li>
+              <li><a href="/#crm-advogados" className="hover:text-white transition-colors">Soluções Personalizadas</a></li>
             </ul>
           </div>
 

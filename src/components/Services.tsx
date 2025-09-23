@@ -84,7 +84,22 @@ const Services = () => {
                         'service_name': service.title
                       });
                     }
-                    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Navigate to service page
+                    let servicePath = '';
+                    if (service.title === 'Assistentes Virtuais com IA') {
+                      servicePath = '/servicos/assistente-ia';
+                    } else if (service.title === 'Automações Empresariais') {
+                      servicePath = '/servicos/automacoes';
+                    } else if (service.title === 'Desenvolvimento Sob Medida') {
+                      servicePath = '/servicos/desenvolvimento';
+                    } else {
+                      // For other services, scroll to contact
+                      document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                      return;
+                    }
+                    
+                    window.location.href = servicePath;
                   }}
                 >
                   Saiba Mais
