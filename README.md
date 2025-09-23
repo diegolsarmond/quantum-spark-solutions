@@ -48,6 +48,15 @@ npm run preview
 4. **Defina o diretório de build**: `dist`
 5. **Configure o servidor** para servir uma SPA (Single Page Application)
 
+### Deploy com Docker
+
+Crie a imagem de produção utilizando o `Dockerfile` disponível no projeto. O build gera os arquivos estáticos com o Vite e um servidor Apache configurado para respeitar o `.htaccess`.
+
+```bash
+docker build -t quantum-spark-solutions .
+docker run -p 8080:80 quantum-spark-solutions
+```
+
 ### Configuração do Servidor
 
 Para servir corretamente a aplicação React em produção, certifique-se de que o servidor:
@@ -56,18 +65,6 @@ Para servir corretamente a aplicação React em produção, certifique-se de que
 - Define os MIME types corretos para `.js` e `.css`
 
 O arquivo `public/.htaccess` já está configurado para servidores Apache.
-```
-
-3. **Build para produção**
-```bash
-npm run build
-```
-
-4. **Configurações do Easypanel**
-- **Build Command:** `npm run build`
-- **Output Directory:** `dist`
-- **Node Version:** 18+
-- **Install Command:** `npm install`
 
 ### Variáveis de Ambiente (Opcional)
 
