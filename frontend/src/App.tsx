@@ -13,6 +13,7 @@ import CRM from "./pages/services/CRM";
 import CRMAdvocacia from "./pages/services/CRMAdvocacia";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
 import ServicesPage from "./pages/Services";
+import NossaHistoria from "./pages/NossaHistoria";
 import BlogPage from "./pages/Blog";
 import AdminLogin from "./pages/admin/Login";
 import AdminRegister from "./pages/admin/Register";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/servicos" element={<ServicesPage />} />
+            <Route path="/nossa-historia" element={<NossaHistoria />} />
             <Route path="/servicos/assistente-ia" element={<AssistenteIA />} />
             <Route path="/servicos/automacoes" element={<Automacoes />} />
             <Route path="/servicos/crm" element={<CRM />} />

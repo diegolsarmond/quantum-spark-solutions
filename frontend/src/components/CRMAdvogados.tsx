@@ -184,12 +184,11 @@ const CRMAdvogados = () => {
                   className="w-full group track-link"
                   onClick={() => {
                     const gtag = getGtag();
-                    gtag?.('event', 'crm_plan_click', {
+                    gtag?.("event", "crm_plan_click", {
                       plan_name: plan.name,
                       plan_price: plan.price,
                     });
-                    // Scroll to contact
-                    document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
+                    window.location.href = "https://quantumjud.quantumtecnologia.com.br/register";
                   }}
                 >
                   Teste Grátis por 14 dias
@@ -218,8 +217,8 @@ const CRMAdvogados = () => {
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
                     const gtag = getGtag();
-                    gtag?.('event', 'custom_crm_click', {
-                      source: 'crm_section',
+                    gtag?.("event", "custom_crm_click", {
+                      source: "crm_section",
                     });
                     document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -233,10 +232,10 @@ const CRMAdvogados = () => {
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
                     const gtag = getGtag();
-                    gtag?.('event', 'demo_request', {
-                      source: 'crm_section',
+                    gtag?.("event", "demo_request", {
+                      source: "crm_section",
                     });
-                    window.open('https://wa.me/553193054200?text=Olá! Gostaria de iniciar o teste grátis de 14 dias do CRM para advogados.', '_blank');
+                    window.location.href = "https://quantumjud.quantumtecnologia.com.br/register";
                   }}
                 >
                   Teste Grátis por 14 dias
