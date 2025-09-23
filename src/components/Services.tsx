@@ -18,6 +18,17 @@ const Services = () => {
       features: ["Workflows Automáticos", "API Integration", "Processos Customizados", "Relatórios Automáticos"]
     },
     {
+      icon: Shield,
+      title: "CRM para Advogados",
+      description: "Gestão completa do relacionamento com clientes e processos jurídicos em uma única plataforma especializada.",
+      features: [
+        "Gestão centralizada de clientes",
+        "Controle de processos com alertas",
+        "Relatórios estratégicos em tempo real",
+        "Integrações jurídicas essenciais"
+      ]
+    },
+    {
       icon: Code2,
       title: "Desenvolvimento Sob Medida",
       description: "Soluções de software personalizadas para atender às necessidades específicas do seu negócio.",
@@ -95,6 +106,8 @@ const Services = () => {
                       servicePath = '/servicos/assistente-ia';
                     } else if (service.title === 'Automações Empresariais') {
                       servicePath = '/servicos/automacoes';
+                    } else if (service.title === 'CRM para Advogados') {
+                      servicePath = '/servicos/crm';
                     } else if (service.title === 'Desenvolvimento Sob Medida') {
                       servicePath = '/servicos/desenvolvimento';
                     } else {

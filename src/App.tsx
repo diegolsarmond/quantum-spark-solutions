@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import AssistenteIA from "./pages/services/AssistenteIA";
 import Automacoes from "./pages/services/Automacoes";
 import Desenvolvimento from "./pages/services/Desenvolvimento";
+import CRM from "./pages/services/CRM";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/servicos/assistente-ia" element={<AssistenteIA />} />
           <Route path="/servicos/automacoes" element={<Automacoes />} />
           <Route path="/servicos/desenvolvimento" element={<Desenvolvimento />} />
+          <Route path="/servicos/crm" element={<CRM />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
