@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import quantumLogo from "@/assets/quantum-logo.png";
+import { trackEvent } from "@/lib/analytics";
 
 const Header = () => {
   return (
@@ -24,9 +27,9 @@ const Header = () => {
           <a href="/servicos/crm" className="text-foreground hover:text-primary transition-smooth">
             CRM
           </a>
-          <a href="/#blog" className="text-foreground hover:text-primary transition-smooth">
+          <Link to="/blog" className="text-foreground hover:text-primary transition-smooth">
             Blog
-          </a>
+          </Link>
           <a href="/#sobre" className="text-foreground hover:text-primary transition-smooth">
             Sobre
           </a>
@@ -35,16 +38,14 @@ const Header = () => {
           </a>
         </nav>
 
-        <Button 
-          variant="quantum" 
+        <Button
+          variant="quantum"
           size="lg"
           className="track-link"
           onClick={() => {
-            if (typeof window !== 'undefined' && (window as any).gtag) {
-              (window as any).gtag('event', 'header_contact_click', {
-                'source': 'header'
-              });
-            }
+            trackEvent('header_contact_click', {
+              source: 'header',
+            });
             window.location.href = '/#contato';
           }}
         >
