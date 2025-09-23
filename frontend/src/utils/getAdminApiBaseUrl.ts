@@ -25,7 +25,7 @@ export const getAdminApiBaseUrl = (rawBaseUrl: string | undefined) => {
 
       return stripTrailingSlashes(url.toString());
     } catch (error) {
-      console.warn("Invalid VITE_API_BASE_URL provided. Falling back to default.", error);
+      console.warn("Invalid admin API base URL provided. Falling back to default.", error);
       return DEFAULT_ADMIN_API_PATH;
     }
   }

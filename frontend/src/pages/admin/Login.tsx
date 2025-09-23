@@ -62,7 +62,7 @@ const LoginPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
-      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_ADMIN_API_BASE_URL);
       const response = await fetch(`${baseUrl}/login`, {
         method: "POST",
         headers: {

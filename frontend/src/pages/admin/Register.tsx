@@ -58,7 +58,7 @@ const RegisterPage = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: RegisterFormData) => {
-      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
+      const baseUrl = getAdminApiBaseUrl(import.meta.env.VITE_ADMIN_API_BASE_URL);
       const response = await fetch(`${baseUrl}/register`, {
         method: "POST",
         headers: {
