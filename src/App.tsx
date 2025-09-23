@@ -16,6 +16,10 @@ import ServicesPage from "./pages/Services";
 import BlogPage from "./pages/Blog";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import BlogManager from "./pages/admin/BlogManager";
+import ServiceManager from "./pages/admin/ServiceManager";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +52,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+
     </TooltipProvider>
   </QueryClientProvider>
 );
