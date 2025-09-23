@@ -1,16 +1,14 @@
 import { useEffect } from "react";
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import SimpleBackground from "@/components/ui/SimpleBackground";
+import { getGtag } from "@/lib/gtag";
 
 declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "typebot-standard": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>;
-    }
+  interface HTMLElementTagNameMap {
+    "typebot-standard": HTMLElement;
   }
 }
 
@@ -136,25 +134,29 @@ Typebot.initStandard({
                   Nossa equipe está pronta para atender suas necessidades urgentes
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
+                  <Button
+                    variant="outline_quantum"
+                    size="lg"
+                    className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                     onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).gtag) {
-                        (window as any).gtag('event', 'whatsapp_click', {
-                          'source': 'contact_section'
-                        });
-                      }
+                      const gtag = getGtag();
+                      gtag?.('event', 'whatsapp_click', {
+                        source: 'contact_section',
+                      });
                       window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre os serviços da Quantum Tecnologia.', '_blank');
                     }}
                   >
                     WhatsApp
                   </Button>
-                  <Button variant="outline_quantum" size="lg" className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
+                  <Button
+                    variant="outline_quantum"
+                    size="lg"
+                    className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                     onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).gtag) {
-                        (window as any).gtag('event', 'phone_click', {
-                          'source': 'contact_section'
-                        });
-                      }
+                      const gtag = getGtag();
+                      gtag?.('event', 'phone_click', {
+                        source: 'contact_section',
+                      });
                       window.open('tel:553193054200', '_self');
                     }}
                   >

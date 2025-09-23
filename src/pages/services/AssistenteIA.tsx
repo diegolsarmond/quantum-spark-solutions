@@ -1,37 +1,70 @@
+import { useMemo } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bot, MessageSquare, Zap, BarChart3, Clock, Shield, ArrowRight, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useServiceBySlug } from "@/hooks/useServices";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getGtag } from "@/lib/gtag";
 
 const AssistenteIA = () => {
-  const features = [
-    {
-      icon: MessageSquare,
-      title: "Processamento Natural de Linguagem",
-      description: "Compreende e responde em linguagem natural, proporcionando conversas fluidas e naturais."
-    },
-    {
-      icon: Clock,
-      title: "Disponibilidade 24/7",
-      description: "Atendimento ininterrupto para seus clientes, mesmo fora do horário comercial."
-    },
-    {
-      icon: Zap,
-      title: "Respostas Instantâneas",
-      description: "Elimina o tempo de espera com respostas imediatas e precisas."
-    },
-    {
-      icon: BarChart3,
-      title: "Análise de Dados",
-      description: "Coleta e analisa dados das conversas para insights estratégicos."
-    },
-    {
-      icon: Shield,
-      title: "Segurança Total",
-      description: "Proteção completa dos dados com criptografia de ponta a ponta."
+  const { data: service, isLoading: isServiceLoading, isError: isServiceError } = useServiceBySlug("assistente-ia");
+
+  const fallbackFeatures = useMemo(
+    () => [
+      {
+        icon: MessageSquare,
+        title: "Processamento Natural de Linguagem",
+        description: "Compreende e responde em linguagem natural, proporcionando conversas fluidas e naturais.",
+      },
+      {
+        icon: Clock,
+        title: "Disponibilidade 24/7",
+        description: "Atendimento ininterrupto para seus clientes, mesmo fora do horário comercial.",
+      },
+      {
+        icon: Zap,
+        title: "Respostas Instantâneas",
+        description: "Elimina o tempo de espera com respostas imediatas e precisas.",
+      },
+      {
+        icon: BarChart3,
+        title: "Análise de Dados",
+        description: "Coleta e analisa dados das conversas para insights estratégicos.",
+      },
+      {
+        icon: Shield,
+        title: "Segurança Total",
+        description: "Proteção completa dos dados com criptografia de ponta a ponta.",
+      },
+    ],
+    [],
+  );
+
+  const featureCards = useMemo(() => {
+    if (!service?.features?.length) {
+      return fallbackFeatures;
     }
-  ];
+
+    return service.features.map((featureText, index) => {
+      const [titlePart, descriptionPart] = featureText.split("|").map((part) => part.trim());
+      const fallback = fallbackFeatures[index % fallbackFeatures.length];
+      return {
+        icon: fallback.icon,
+        title: titlePart?.length ? titlePart : fallback.title,
+        description:
+          descriptionPart?.length ? descriptionPart : service.description ?? fallback.description,
+      };
+    });
+  }, [fallbackFeatures, service]);
+
+  const heroLabel = service?.title ?? "Assistente Virtual com IA";
+  const heroHeadline = service?.summary ?? "Atendimento Inteligente e Automatizado";
+  const heroDescription =
+    service?.description ??
+    "Revolucione o atendimento ao cliente com assistentes virtuais alimentados por IA. Conversas naturais, respostas precisas e disponibilidade total.";
 
   const benefits = [
     "Redução de até 70% no volume de atendimento humano",
@@ -72,42 +105,35 @@ const AssistenteIA = () => {
           <div className="max-w-4xl mx-auto text-center text-white">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/20 text-sm font-medium mb-6 animate-pulse-glow">
               <Bot className="h-4 w-4 mr-2" />
-              Assistente Virtual com IA
+              {heroLabel}
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Atendimento Inteligente e Automatizado
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Revolucione o atendimento ao cliente com assistentes virtuais alimentados por IA. 
-              Conversas naturais, respostas precisas e disponibilidade total.
-            </p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">{heroHeadline}</h1>
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">{heroDescription}</p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button 
-                variant="outline_quantum" 
-                size="xl" 
+              <Button
+                variant="outline_quantum"
+                size="xl"
                 className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                 onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'demo_request', {
-                      'service': 'assistente_ia'
-                    });
-                  }
+                  const gtag = getGtag();
+                  gtag?.('event', 'demo_request', {
+                    service: 'assistente_ia',
+                  });
                   document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
                 Solicitar Demonstração
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
-              <Button 
-                variant="outline_quantum" 
-                size="xl" 
+              <Button
+                variant="outline_quantum"
+                size="xl"
                 className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                 onClick={() => {
-                  if (typeof window !== 'undefined' && (window as any).gtag) {
-                    (window as any).gtag('event', 'whatsapp_click', {
-                      'service': 'assistente_ia'
-                    });
-                  }
+                  const gtag = getGtag();
+                  gtag?.('event', 'whatsapp_click', {
+                    service: 'assistente_ia',
+                  });
                   window.open('https://wa.me/553193054200?text=Olá! Gostaria de saber mais sobre o Assistente Virtual com IA.', '_blank');
                 }}
               >
@@ -130,27 +156,50 @@ const AssistenteIA = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2 animate-float"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <CardHeader>
-                  <div className="p-4 rounded-full bg-gradient-quantum w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <feature.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+          {isServiceError && (
+            <div className="mb-8 rounded-lg border border-amber-200/60 bg-amber-50/10 p-4 text-sm text-amber-200">
+              Não foi possível carregar os destaques personalizados deste serviço. Exibindo a versão padrão.
+            </div>
+          )}
+
+          {isServiceLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Card
+                  key={index}
+                  className="bg-gradient-card border-quantum-light/20"
+                >
+                  <CardHeader>
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <Skeleton className="h-6 w-2/3" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featureCards.map((feature, index) => (
+                <Card
+                  key={feature.title + index}
+                  className="bg-gradient-card border-quantum-light/20 hover:shadow-quantum transition-all duration-300 group hover:-translate-y-2 animate-float"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <CardHeader>
+                    <div className="p-4 rounded-full bg-gradient-quantum w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <feature.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl group-hover:text-quantum-bright transition-colors">
+                      {feature.title}
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -208,34 +257,32 @@ const AssistenteIA = () => {
                 inteligente e personalizado para seu negócio.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'contact_click', {
-                        'service': 'assistente_ia',
-                        'source': 'cta_section'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'contact_click', {
+                      service: 'assistente_ia',
+                      source: 'cta_section',
+                    });
                     window.location.href = '/#contato';
                   }}
                 >
                   Solicitar Orçamento
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
-                <Button 
-                  variant="outline_quantum" 
-                  size="xl" 
+                <Button
+                  variant="outline_quantum"
+                  size="xl"
                   className="bg-white/20 border-white/30 text-white hover:bg-white hover:text-quantum-deep track-link"
                   onClick={() => {
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'demo_request', {
-                        'service': 'assistente_ia',
-                        'source': 'cta_section'
-                      });
-                    }
+                    const gtag = getGtag();
+                    gtag?.('event', 'demo_request', {
+                      service: 'assistente_ia',
+                      source: 'cta_section',
+                    });
                     window.open('https://wa.me/553193054200?text=Olá! Gostaria de agendar uma demonstração do Assistente Virtual com IA.', '_blank');
                   }}
                 >

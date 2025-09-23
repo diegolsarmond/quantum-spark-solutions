@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -24,6 +26,8 @@ import {
   Users,
   Workflow
 } from "lucide-react";
+import { useServiceBySlug } from "@/hooks/useServices";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const getGtag = () => {
   if (typeof window === "undefined") {
@@ -34,23 +38,50 @@ const getGtag = () => {
 };
 
 const CRMAdvocacia = () => {
-  const heroHighlights = [
-    {
-      icon: ShieldCheck,
-      title: "Compliance Automatizado",
-      description: "Controle prazos, prorrogações e publicações com alertas inteligentes e trilhas de auditoria."
-    },
-    {
-      icon: Link,
-      title: "Integração com Tribunais",
-      description: "Sincronização diária com PJe, Eproc, Projudi e principais sistemas estaduais."
-    },
-    {
-      icon: Users,
-      title: "Experiência do Cliente",
-      description: "Portal exclusivo com atualização de casos, documentos e pagamentos em tempo real."
+  const { data: service, isLoading: isServiceLoading, isError: isServiceError } = useServiceBySlug("crm/advocacia");
+
+  const heroHighlights = useMemo(
+    () => [
+      {
+        icon: ShieldCheck,
+        title: "Compliance Automatizado",
+        description: "Controle prazos, prorrogações e publicações com alertas inteligentes e trilhas de auditoria.",
+      },
+      {
+        icon: Link,
+        title: "Integração com Tribunais",
+        description: "Sincronização diária com PJe, Eproc, Projudi e principais sistemas estaduais.",
+      },
+      {
+        icon: Users,
+        title: "Experiência do Cliente",
+        description: "Portal exclusivo com atualização de casos, documentos e pagamentos em tempo real.",
+      },
+    ],
+    [],
+  );
+
+  const highlightCards = useMemo(() => {
+    if (!service?.features?.length) {
+      return heroHighlights;
     }
-  ];
+
+    return service.features.map((featureText, index) => {
+      const [titlePart, descriptionPart] = featureText.split("|").map((part) => part.trim());
+      const fallback = heroHighlights[index % heroHighlights.length];
+      return {
+        icon: fallback.icon,
+        title: titlePart?.length ? titlePart : fallback.title,
+        description: descriptionPart?.length ? descriptionPart : service.description ?? fallback.description,
+      };
+    });
+  }, [heroHighlights, service]);
+
+  const heroLabel = service?.title ?? "CRM Especializado para Escritórios de Advocacia";
+  const heroHeadline = service?.summary ?? "Controle absoluto dos seus processos, clientes e resultados";
+  const heroDescription =
+    service?.description ??
+    "Uma plataforma criada por especialistas jurídicos para garantir produtividade, conformidade e excelência no relacionamento com o cliente.";
 
   const productivityMetrics = [
     {
@@ -216,14 +247,10 @@ const CRMAdvocacia = () => {
           <div className="max-w-5xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium rounded-full bg-white/15 backdrop-blur animate-pulse-glow">
               <Gavel className="h-4 w-4 mr-2" />
-              CRM Especializado para Escritórios de Advocacia
+              {heroLabel}
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              Controle absoluto dos seus processos, clientes e resultados
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-              Uma plataforma criada por especialistas jurídicos para garantir produtividade, conformidade e excelência no relacionamento com o cliente.
-            </p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">{heroHeadline}</h1>
+            <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">{heroDescription}</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button variant="quantum" size="xl" className="track-link shadow-quantum" onClick={() => handleDemoClick("hero")}
               >
@@ -239,21 +266,41 @@ const CRMAdvocacia = () => {
                 Falar com um especialista
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              {heroHighlights.map((item) => (
-                <Card key={item.title} className="bg-white/10 border-white/20 backdrop-blur-sm text-left">
-                  <CardHeader className="space-y-3">
-                    <div className="p-3 rounded-full bg-white/20 w-fit">
-                      <item.icon className="h-5 w-5 text-white" />
-                    </div>
-                    <CardTitle className="text-lg text-white">{item.title}</CardTitle>
-                    <CardDescription className="text-white/80 text-sm leading-relaxed">
-                      {item.description}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+            {isServiceError && (
+              <div className="mt-8 rounded-lg border border-amber-200/60 bg-amber-50/10 p-4 text-sm text-amber-100">
+                Não foi possível carregar os destaques personalizados deste serviço. Exibindo a versão padrão.
+              </div>
+            )}
+
+            {isServiceLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm">
+                    <CardHeader className="space-y-3">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <Skeleton className="h-5 w-1/2" />
+                      <Skeleton className="h-4 w-full" />
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                {highlightCards.map((item, index) => (
+                  <Card key={item.title + index} className="bg-white/10 border-white/20 backdrop-blur-sm text-left">
+                    <CardHeader className="space-y-3">
+                      <div className="p-3 rounded-full bg-white/20 w-fit">
+                        <item.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <CardTitle className="text-lg text-white">{item.title}</CardTitle>
+                      <CardDescription className="text-white/80 text-sm leading-relaxed">
+                        {item.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
