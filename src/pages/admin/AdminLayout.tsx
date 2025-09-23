@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Bell, Briefcase, FileText, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navigationItems = [
   { label: "Visão Geral", to: "/admin", icon: LayoutDashboard, exact: true },
@@ -29,6 +30,13 @@ const navigationItems = [
 
 const AdminLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/admin/login");
+  };
 
   return (
     <SidebarProvider>
@@ -81,7 +89,7 @@ const AdminLayout = () => {
                 <Settings className="h-4 w-4" /> Preferências do site
               </Link>
             </Button>
-            <Button variant="ghost" size="sm" className="justify-start gap-2">
+            <Button variant="ghost" size="sm" className="justify-start gap-2" onClick={handleLogout}>
               <LogOut className="h-4 w-4" /> Sair
             </Button>
           </SidebarFooter>
