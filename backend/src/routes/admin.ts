@@ -86,10 +86,12 @@ adminRouter.post(
 
     return res.json({
       token: jwtToken,
-      admin: {
+      user: {
         id: admin.id,
         email: admin.email,
         name: admin.name,
+        roles: ['admin'],
+        permissions: ['admin:access'],
       },
     });
   })

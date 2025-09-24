@@ -26,8 +26,8 @@ interface AuthContextValue {
   hasRole: (role: string) => boolean;
 }
 
-const TOKEN_STORAGE_KEY = "qss.auth.token";
-const USER_STORAGE_KEY = "qss.auth.user";
+export const TOKEN_STORAGE_KEY = "qss.auth.token";
+export const USER_STORAGE_KEY = "qss.auth.user";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
@@ -41,6 +41,24 @@ const getStorage = () => {
   } catch (error) {
     console.warn("Não foi possível acessar o localStorage", error);
     return null;
+  }
+};
+
+export const persistAuthState = (
+  storage: Pick<Storage, "setItem" | "removeItem"> | null,
+  token: string,
+  user: AuthUser | null | undefined,
+) => {
+  if (!storage) {
+    return;
+  }
+
+  storage.setItem(TOKEN_STORAGE_KEY, token);
+
+  if (user) {
+    storage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+  } else {
+    storage.removeItem(USER_STORAGE_KEY);
   }
 };
 
@@ -185,18 +203,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const normalizedUser = nextUser ?? claimsToUser(decodedClaims);
     setUser(normalizedUser ?? null);
 
-    const storage = getStorage();
-    if (!storage) {
-      return;
-    }
-
-    storage.setItem(TOKEN_STORAGE_KEY, newToken);
-
-    if (normalizedUser) {
-      storage.setItem(USER_STORAGE_KEY, JSON.stringify(normalizedUser));
-    } else {
-      storage.removeItem(USER_STORAGE_KEY);
-    }
+    persistAuthState(getStorage(), newToken, normalizedUser ?? null);
   }, []);
 
   const logout = useCallback(() => {

@@ -247,7 +247,9 @@ describe('Admin routes', () => {
       .send({ email: adminUsers[0]!.email, password });
 
     expect(response.status).toBe(200);
-    const { token } = response.body as { token: string };
+    const { token, user } = response.body as { token: string; user: { permissions?: string[] } };
+    expect(Array.isArray(user?.permissions)).toBe(true);
+    expect(user?.permissions).toContain('admin:access');
     return token;
   };
 
@@ -257,7 +259,15 @@ describe('Admin routes', () => {
       .send({ email: adminUsers[0]!.email, password });
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('token');
+    expect(response.body).toMatchObject({
+      token: expect.any(String),
+      user: {
+        id: adminUsers[0]!.id,
+        email: adminUsers[0]!.email,
+        name: adminUsers[0]!.name,
+        permissions: expect.arrayContaining(['admin:access']),
+      },
+    });
     expect(sessions).toHaveLength(1);
   });
 
