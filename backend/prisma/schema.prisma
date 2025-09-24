@@ -39,8 +39,13 @@ model BlogPost {
 
 model Service {
   id          String   @id @default(uuid())
-  name        String
+  title       String
+  slug        String   @unique
+  category    String
+  summary     String
   description String
+  icon        String
+  features    String[] @default([])
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
