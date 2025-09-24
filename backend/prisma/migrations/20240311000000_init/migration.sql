@@ -14,13 +14,18 @@ CREATE TABLE IF NOT EXISTS site_quantum."BlogPost" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
-    content TEXT NOT NULL,
-    published BOOLEAN NOT NULL DEFAULT FALSE,
-    "publishedAt" TIMESTAMP(3),
+    description TEXT NOT NULL,
+    author TEXT NOT NULL,
+    category TEXT NOT NULL,
+    date TEXT NOT NULL,
+    "readTime" TEXT NOT NULL,
+    tags TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+    image TEXT,
+    featured BOOLEAN NOT NULL DEFAULT FALSE,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "authorId" UUID,
-    CONSTRAINT "BlogPost_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES site_quantum."AdminUser"(id) ON DELETE SET NULL ON UPDATE CASCADE
+    "createdById" UUID,
+    CONSTRAINT "BlogPost_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES site_quantum."AdminUser"(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS site_quantum."Service" (
@@ -41,7 +46,7 @@ CREATE TABLE IF NOT EXISTS site_quantum."SessionToken" (
     CONSTRAINT "SessionToken_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES site_quantum."AdminUser"(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS "BlogPost_author_idx" ON site_quantum."BlogPost"("authorId");
+CREATE INDEX IF NOT EXISTS "BlogPost_createdBy_idx" ON site_quantum."BlogPost"("createdById");
 CREATE INDEX IF NOT EXISTS "SessionToken_admin_idx" ON site_quantum."SessionToken"("adminId");
 
 ALTER TABLE site_quantum."AdminUser"

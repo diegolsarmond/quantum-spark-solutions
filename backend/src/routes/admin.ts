@@ -20,6 +20,12 @@ import {
 
 export const adminRouter = Router();
 
+const serializeBlogPost = <T extends { image: string | null; tags?: string[] | null }>(post: T) => ({
+  ...post,
+  image: post.image ?? undefined,
+  tags: post.tags ?? [],
+});
+
 adminRouter.post(
   '/register',
   validateBody(registerSchema),
@@ -115,11 +121,22 @@ adminRouter.use(authenticate);
 
 adminRouter.get(
   '/posts',
-  asyncHandler(async (_req, res) => {
+  asyncHandler(async (req, res) => {
+    const slugQuery = req.query.slug;
+    const slug = Array.isArray(slugQuery) ? slugQuery[0] : slugQuery;
+
+    if (typeof slug === 'string' && slug.trim().length > 0) {
+      const post = await prisma.blogPost.findUnique({ where: { slug } });
+      if (!post) {
+        return res.json([]);
+      }
+      return res.json([serializeBlogPost(post)]);
+    }
+
     const posts = await prisma.blogPost.findMany({
       orderBy: { createdAt: 'desc' },
     });
-    return res.json(posts);
+    return res.json(posts.map(serializeBlogPost));
   })
 );
 
@@ -127,17 +144,15 @@ adminRouter.post(
   '/posts',
   validateBody(blogPostSchema),
   asyncHandler(async (req, res) => {
-    const { published, publishedAt, ...data } = req.body;
     const post = await prisma.blogPost.create({
       data: {
-        ...data,
-        published: published ?? false,
-        publishedAt: publishedAt ?? (published ? new Date() : null),
-        authorId: req.admin?.id ?? null,
+        ...req.body,
+        featured: req.body.featured ?? false,
+        createdById: req.admin?.id ?? null,
       },
     });
 
-    return res.status(201).json(post);
+    return res.status(201).json(serializeBlogPost(post));
   })
 );
 
@@ -148,7 +163,7 @@ adminRouter.get(
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
-    return res.json(post);
+    return res.json(serializeBlogPost(post));
   })
 );
 
@@ -160,7 +175,7 @@ adminRouter.put(
       where: { id: req.params.id },
       data: req.body,
     });
-    return res.json(post);
+    return res.json(serializeBlogPost(post));
 
   })
 );

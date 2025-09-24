@@ -52,10 +52,15 @@ interface BlogPostRecord {
   id: string;
   title: string;
   slug: string;
-  content: string;
-  published: boolean;
-  publishedAt: Date | null;
-  authorId: string | null;
+  description: string;
+  author: string;
+  category: string;
+  date: string;
+  readTime: string;
+  tags: string[];
+  image: string | null;
+  featured: boolean;
+  createdById: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -78,6 +83,26 @@ let sessions: SessionRecord[] = [];
 let posts: BlogPostRecord[] = [];
 let services: ServiceRecord[] = [];
 let adminUsers: AdminRecord[] = [];
+
+const buildBlogPostInput = (
+  overrides: Partial<Omit<BlogPostRecord, 'id' | 'createdAt' | 'updatedAt' | 'createdById'>> & {
+    slug?: string;
+    tags?: string[];
+    image?: string | null;
+  } = {}
+) => ({
+  title: 'First post',
+  slug: 'first-post',
+  description: 'Explorando o uso de IA no atendimento',
+  author: 'Admin User',
+  category: 'Tecnologia',
+  date: '2024-01-01',
+  readTime: '5 min',
+  tags: ['ia'],
+  featured: false,
+  ...overrides,
+  image: overrides.image ?? undefined,
+});
 
 const prismaMock = {
   adminUser: {
@@ -154,10 +179,15 @@ const prismaMock = {
           id: data.id ?? `post-${posts.length + 1}`,
           title: data.title!,
           slug: data.slug!,
-          content: data.content!,
-          published: data.published ?? false,
-          publishedAt: data.publishedAt ?? null,
-          authorId: data.authorId ?? null,
+          description: data.description!,
+          author: data.author!,
+          category: data.category!,
+          date: data.date!,
+          readTime: data.readTime!,
+          tags: data.tags ?? [],
+          image: data.image ?? null,
+          featured: data.featured ?? false,
+          createdById: data.createdById ?? null,
           createdAt: now,
           updatedAt: now,
         };
@@ -347,17 +377,16 @@ describe('Admin routes', () => {
   it('creates, lists and deletes blog posts', async () => {
     const token = await authenticate();
 
+    const payload = buildBlogPostInput({ tags: ['ia', 'automacao'], featured: true });
     const createResponse = await request(app)
       .post('/api/admin/posts')
       .set('Authorization', `Bearer ${token}`)
-      .send({
-        title: 'First post',
-        slug: 'first-post',
-        content: 'Hello world',
-        published: true,
-      });
+      .send(payload);
 
     expect(createResponse.status).toBe(201);
+    expect(createResponse.body.slug).toBe(payload.slug);
+    expect(createResponse.body.tags).toEqual(payload.tags);
+    expect(createResponse.body.image).toBeUndefined();
 
     const listResponse = await request(app)
       .get('/api/admin/posts')
@@ -365,6 +394,12 @@ describe('Admin routes', () => {
 
     expect(listResponse.status).toBe(200);
     expect(listResponse.body).toHaveLength(1);
+    expect(listResponse.body[0]).toMatchObject({
+      title: payload.title,
+      description: payload.description,
+      author: payload.author,
+      featured: payload.featured,
+    });
 
     const postId = listResponse.body[0].id as string;
 
@@ -383,12 +418,12 @@ describe('Admin routes', () => {
     await request(app)
       .post('/api/admin/posts')
       .set('Authorization', `Bearer ${token}`)
-      .send({ title: 'Post', slug: 'duplicate', content: 'One' });
+      .send(buildBlogPostInput({ title: 'Post', slug: 'duplicate' }));
 
     const duplicateResponse = await request(app)
       .post('/api/admin/posts')
       .set('Authorization', `Bearer ${token}`)
-      .send({ title: 'Another', slug: 'duplicate', content: 'Two' });
+      .send(buildBlogPostInput({ title: 'Another', slug: 'duplicate' }));
 
     expect(duplicateResponse.status).toBe(409);
     expect(duplicateResponse.body.message).toContain('Unique constraint failed');
