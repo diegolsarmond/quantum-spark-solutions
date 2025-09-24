@@ -10,16 +10,15 @@ const config: Config = {
         tsconfig: './tsconfig.json',
       },
     ],
-
   },
   moduleNameMapper: {
-    '^(\.\.?/.*)\.js$': '$1',
+    '^(\\.\\.?/.*)\\.js$': '$1',
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/index.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'cjs', 'json', 'node'],
-
 };
 
 export default config;
