@@ -176,7 +176,17 @@ adminRouter.delete(
 
 adminRouter.get(
   '/services',
-  asyncHandler(async (_req, res) => {
+  asyncHandler(async (req, res) => {
+    const { slug } = req.query;
+
+    if (typeof slug === 'string' && slug.trim().length > 0) {
+      const service = await prisma.service.findUnique({ where: { slug } });
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
+      }
+      return res.json(service);
+    }
+
     const services = await prisma.service.findMany({
       orderBy: { createdAt: 'desc' },
     });
@@ -188,10 +198,11 @@ adminRouter.post(
   '/services',
   validateBody(serviceSchema),
   asyncHandler(async (req, res) => {
+    const { isActive = true, ...serviceData } = req.body;
     const service = await prisma.service.create({
       data: {
-        ...req.body,
-        isActive: req.body.isActive ?? true,
+        ...serviceData,
+        isActive,
       },
     });
 

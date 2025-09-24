@@ -22,8 +22,13 @@ export const blogPostSchema = z.object({
 export const updateBlogPostSchema = blogPostSchema.partial();
 
 export const serviceSchema = z.object({
-  name: z.string().min(3),
+  title: z.string().min(3),
+  slug: z.string().min(1),
+  category: z.string().min(1),
+  summary: z.string().min(1),
   description: z.string().min(1),
+  icon: z.string().min(1),
+  features: z.array(z.string().min(1)).min(1),
   isActive: z.boolean().optional().default(true),
 });
 

@@ -62,8 +62,13 @@ interface BlogPostRecord {
 
 interface ServiceRecord {
   id: string;
-  name: string;
+  title: string;
+  slug: string;
+  category: string;
+  summary: string;
   description: string;
+  icon: string;
+  features: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -191,20 +196,35 @@ const prismaMock = {
   },
   service: {
     findMany: jest.fn(async () => services.slice()),
-    create: jest.fn(async ({ data }: { data: Omit<ServiceRecord, 'id' | 'createdAt' | 'updatedAt'> & Partial<ServiceRecord> }) => {
-      const now = new Date();
-      const record: ServiceRecord = {
-        id: data.id ?? `service-${services.length + 1}`,
-        name: data.name!,
-        description: data.description!,
-
-        isActive: data.isActive ?? true,
-        createdAt: now,
-        updatedAt: now,
-      };
-      services.push(record);
-      return record;
+    findUnique: jest.fn(async ({ where }: { where: { id?: string; slug?: string } }) => {
+      if (where.id) {
+        return services.find((service) => service.id === where.id) ?? null;
+      }
+      if (where.slug) {
+        return services.find((service) => service.slug === where.slug) ?? null;
+      }
+      return null;
     }),
+    create: jest.fn(
+      async ({ data }: { data: Omit<ServiceRecord, 'id' | 'createdAt' | 'updatedAt'> & Partial<ServiceRecord> }) => {
+        const now = new Date();
+        const record: ServiceRecord = {
+          id: data.id ?? `service-${services.length + 1}`,
+          title: data.title!,
+          slug: data.slug!,
+          category: data.category!,
+          summary: data.summary!,
+          description: data.description!,
+          icon: data.icon!,
+          features: data.features ?? [],
+          isActive: data.isActive ?? true,
+          createdAt: now,
+          updatedAt: now,
+        };
+        services.push(record);
+        return record;
+      }
+    ),
     update: jest.fn(async ({ where, data }: { where: { id: string }; data: Partial<ServiceRecord> }) => {
       const service = services.find((item) => item.id === where.id);
       if (!service) {
@@ -381,7 +401,15 @@ describe('Admin routes', () => {
     const createResponse = await request(app)
       .post('/api/admin/services')
       .set('Authorization', `Bearer ${token}`)
-      .send({ name: 'Consulting', description: 'Tech consulting' });
+      .send({
+        title: 'Consulting',
+        slug: 'consulting',
+        category: 'strategy',
+        summary: 'Tech consulting summary',
+        description: 'Tech consulting',
+        icon: 'server',
+        features: ['Discovery workshops', 'Roadmap planning'],
+      });
 
     expect(createResponse.status).toBe(201);
 
@@ -390,10 +418,37 @@ describe('Admin routes', () => {
     const updateResponse = await request(app)
       .put(`/api/admin/services/${serviceId}`)
       .set('Authorization', `Bearer ${token}`)
-      .send({ description: 'Updated description' });
+      .send({ description: 'Updated description', features: ['Discovery workshops'] });
 
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body.description).toBe('Updated description');
+    expect(Array.isArray(updateResponse.body.features)).toBe(true);
+    expect(updateResponse.body.features).toHaveLength(1);
+  });
+
+  it('retrieves a service by slug', async () => {
+    const token = await authenticate();
+
+    await request(app)
+      .post('/api/admin/services')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title: 'AI Assistant',
+        slug: 'assistente-ia',
+        category: 'automation',
+        summary: 'Personalized AI assistants',
+        description: 'Implement virtual assistants powered by AI.',
+        icon: 'bot',
+        features: ['Natural language support', 'Omnichannel'],
+      });
+
+    const response = await request(app)
+      .get('/api/admin/services?slug=assistente-ia')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.slug).toBe('assistente-ia');
+    expect(response.body.title).toBe('AI Assistant');
   });
 
   it('returns 404 when updating an unknown service', async () => {
