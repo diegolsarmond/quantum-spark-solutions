@@ -188,7 +188,7 @@ const CRMAdvogados = () => {
                       plan_name: plan.name,
                       plan_price: plan.price,
                     });
-                    window.location.href = "https://quantumjud.quantumtecnologia.com.br/register";
+                    window.location.href = "/admin/register";
                   }}
                 >
                   Teste Grátis por 14 dias
@@ -235,7 +235,7 @@ const CRMAdvogados = () => {
                     gtag?.("event", "demo_request", {
                       source: "crm_section",
                     });
-                    window.location.href = "https://quantumjud.quantumtecnologia.com.br/register";
+                    window.location.href = "/admin/register";
                   }}
                 >
                   Teste Grátis por 14 dias
