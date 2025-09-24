@@ -1,4 +1,4 @@
-import cors, { CorsOptions } from 'cors';
+import cors, { type CorsCallback } from './lib/cors.js';
 import express from 'express';
 
 import { env } from './config/env.js';
@@ -8,8 +8,8 @@ import { adminRouter } from './routes/admin.js';
 export const createApp = () => {
   const app = express();
 
-  const corsOptions: CorsOptions = {
-    origin: (origin, callback) => {
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: CorsCallback) => {
       if (!origin || env.corsAllowedOrigins.includes('*')) {
         return callback(null, true);
       }

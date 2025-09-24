@@ -15,5 +15,6 @@
     "types": ["node", "jest"]
   },
   "include": ["src"],
+  "files": ["src/global.d.ts"],
   "exclude": ["node_modules", "dist"]
 }
