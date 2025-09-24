@@ -14,9 +14,14 @@ export const registerSchema = z.object({
 export const blogPostSchema = z.object({
   title: z.string().min(3),
   slug: z.string().min(3),
-  content: z.string().min(1),
-  published: z.boolean().optional().default(false),
-  publishedAt: z.coerce.date().optional().nullable(),
+  description: z.string().min(1),
+  author: z.string().min(1),
+  category: z.string().min(1),
+  date: z.string().min(1),
+  readTime: z.string().min(1),
+  tags: z.array(z.string().min(1)).min(1),
+  image: z.string().url().optional(),
+  featured: z.boolean().optional().default(false),
 });
 
 export const updateBlogPostSchema = blogPostSchema.partial();
